@@ -1,1 +1,2946 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Los Wolves — Bienestar Emocional</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg-deep: #050d1a;
+  --bg-card: #0a1628;
+  --bg-elevated: #0f1f38;
+  --bg-hover: #162840;
+  --accent-cyan: #00d4ff;
+  --accent-gold: #f5c542;
+  --accent-green: #00e676;
+  --accent-red: #ff4d6d;
+  --accent-purple: #a855f7;
+  --text-primary: #e8f4ff;
+  --text-secondary: #7a9bbf;
+  --text-muted: #3d5a7a;
+  --border: rgba(0,212,255,0.12);
+  --border-gold: rgba(245,197,66,0.2);
+  --shadow: 0 8px 32px rgba(0,0,0,0.5);
+  --glow-cyan: 0 0 20px rgba(0,212,255,0.3);
+  --glow-gold: 0 0 20px rgba(245,197,66,0.3);
+  --radius: 16px;
+  --radius-sm: 10px;
+  --sidebar-w: 240px;
+  font-family: 'Nunito', sans-serif;
+}
 
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+
+body {
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* === SCROLLBAR === */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg-deep)}
+::-webkit-scrollbar-thumb{background:var(--accent-cyan);border-radius:3px;opacity:.5}
+
+/* === PAGES === */
+.page { display: none; min-height: 100vh; }
+.page.active { display: flex; }
+
+/* ===================== LOGIN PAGE ===================== */
+#page-login {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(ellipse at 20% 50%, #0a1f3a 0%, var(--bg-deep) 60%),
+              radial-gradient(ellipse at 80% 20%, #001830 0%, transparent 50%);
+  position: relative;
+  overflow: hidden;
+}
+
+.login-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.login-particles span {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: var(--accent-cyan);
+  border-radius: 50%;
+  animation: float-up 8s linear infinite;
+  opacity: 0;
+}
+@keyframes float-up {
+  0%{transform:translateY(100vh) scale(0);opacity:0}
+  10%{opacity:.6}
+  90%{opacity:.3}
+  100%{transform:translateY(-10vh) scale(1);opacity:0}
+}
+
+.login-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 48px 40px;
+  width: 100%;
+  max-width: 440px;
+  position: relative;
+  z-index: 2;
+  box-shadow: var(--shadow), var(--glow-cyan);
+  animation: slide-up .6s ease;
+}
+
+@keyframes slide-up {
+  from{transform:translateY(30px);opacity:0}
+  to{transform:translateY(0);opacity:1}
+}
+
+.login-logo {
+  text-align: center;
+  margin-bottom: 32px;
+}
+.wolf-emoji-big {
+  font-size: 56px;
+  display: block;
+  animation: wolf-pulse 3s ease-in-out infinite;
+}
+@keyframes wolf-pulse {
+  0%,100%{transform:scale(1)}
+  50%{transform:scale(1.08)}
+}
+.login-logo h1 {
+  font-size: 28px;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--accent-cyan), var(--accent-gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-top: 8px;
+}
+.login-logo p { color: var(--text-secondary); font-size: 13px; margin-top: 4px; }
+
+.login-tabs {
+  display: flex;
+  background: var(--bg-deep);
+  border-radius: var(--radius-sm);
+  padding: 4px;
+  margin-bottom: 28px;
+}
+.login-tab {
+  flex: 1;
+  padding: 10px;
+  text-align: center;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--text-secondary);
+  transition: all .3s;
+}
+.login-tab.active {
+  background: var(--accent-cyan);
+  color: #000;
+}
+
+.form-group { margin-bottom: 16px; }
+.form-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+.form-group input, .form-group select {
+  width: 100%;
+  background: var(--bg-deep);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  color: var(--text-primary);
+  font-family: 'Nunito', sans-serif;
+  font-size: 15px;
+  transition: border-color .3s, box-shadow .3s;
+  outline: none;
+  appearance: none;
+}
+.form-group input:focus, .form-group select:focus {
+  border-color: var(--accent-cyan);
+  box-shadow: var(--glow-cyan);
+}
+
+.role-selector {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.role-btn {
+  flex: 1;
+  padding: 16px 12px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-deep);
+  color: var(--text-secondary);
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all .3s;
+  text-align: center;
+}
+.role-btn.active {
+  border-color: var(--accent-cyan);
+  color: var(--accent-cyan);
+  background: rgba(0,212,255,.08);
+}
+.role-btn span { display: block; font-size: 24px; margin-bottom: 4px; }
+
+.btn-primary {
+  width: 100%;
+  background: linear-gradient(135deg, var(--accent-cyan), #0099cc);
+  color: #000;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 900;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all .3s;
+  position: relative;
+  overflow: hidden;
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--glow-cyan);
+}
+.btn-primary::after {
+  content:'';
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0.1);
+  transform: translateX(-100%);
+  transition: transform .4s;
+}
+.btn-primary:hover::after { transform: translateX(100%); }
+
+/* ===================== MAIN LAYOUT ===================== */
+#page-app {
+  flex-direction: row;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: var(--sidebar-w);
+  min-height: 100vh;
+  background: var(--bg-card);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  padding: 24px 0;
+}
+
+.sidebar-logo {
+  padding: 0 20px 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.sidebar-logo .wolf-icon { font-size: 32px; }
+.sidebar-logo .brand { font-size: 18px; font-weight: 900; color: var(--accent-cyan); }
+.sidebar-logo .tagline { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: .1em; }
+
+.sidebar-coins {
+  margin: 16px 16px;
+  background: linear-gradient(135deg, rgba(245,197,66,.1), rgba(245,197,66,.05));
+  border: 1px solid var(--border-gold);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.coins-icon { font-size: 22px; }
+.coins-amount { font-size: 22px; font-weight: 900; color: var(--accent-gold); }
+.coins-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: .05em; }
+
+.sidebar-nav { flex: 1; padding: 8px 12px; }
+.nav-section {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  padding: 12px 8px 6px;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all .2s;
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 2px;
+  position: relative;
+}
+.nav-item:hover { background: var(--bg-hover); color: var(--text-primary); }
+.nav-item.active {
+  background: rgba(0,212,255,.12);
+  color: var(--accent-cyan);
+}
+.nav-item.active::before {
+  content:'';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 60%;
+  background: var(--accent-cyan);
+  border-radius: 0 4px 4px 0;
+}
+.nav-icon { font-size: 18px; width: 22px; text-align: center; }
+
+.sidebar-user {
+  padding: 16px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.user-avatar {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+.user-name { font-size: 13px; font-weight: 700; color: var(--text-primary); }
+.user-role { font-size: 11px; color: var(--text-muted); }
+.sidebar-logout {
+  margin-left: auto;
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: 18px;
+  transition: color .2s;
+}
+.sidebar-logout:hover { color: var(--accent-red); }
+
+/* MAIN CONTENT */
+.main-content {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  min-height: 100vh;
+  background: var(--bg-deep);
+}
+
+.section { display: none; padding: 32px; }
+.section.active { display: block; }
+
+/* TOP BAR */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+.topbar-title { font-size: 24px; font-weight: 900; }
+.topbar-title span { color: var(--accent-cyan); }
+.topbar-subtitle { color: var(--text-secondary); font-size: 14px; margin-top: 2px; }
+.topbar-actions { display: flex; gap: 10px; align-items: center; }
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+}
+.badge-cyan { background: rgba(0,212,255,.12); color: var(--accent-cyan); border: 1px solid rgba(0,212,255,.2); }
+.badge-gold { background: rgba(245,197,66,.12); color: var(--accent-gold); border: 1px solid rgba(245,197,66,.2); }
+.badge-green { background: rgba(0,230,118,.12); color: var(--accent-green); border: 1px solid rgba(0,230,118,.2); }
+.badge-red { background: rgba(255,77,109,.12); color: var(--accent-red); border: 1px solid rgba(255,77,109,.2); }
+
+/* CARDS */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+}
+.card-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  margin-bottom: 8px;
+}
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.grid-auto { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+
+/* STAT CARDS */
+.stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  position: relative;
+  overflow: hidden;
+  transition: transform .2s, border-color .2s;
+}
+.stat-card:hover { transform: translateY(-3px); border-color: rgba(0,212,255,.3); }
+.stat-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  filter: blur(30px);
+  opacity: .15;
+}
+.stat-card.cyan::after { background: var(--accent-cyan); }
+.stat-card.gold::after { background: var(--accent-gold); }
+.stat-card.green::after { background: var(--accent-green); }
+.stat-card.purple::after { background: var(--accent-purple); }
+
+.stat-label { font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .08em; }
+.stat-value { font-size: 36px; font-weight: 900; margin: 6px 0 4px; }
+.stat-card.cyan .stat-value { color: var(--accent-cyan); }
+.stat-card.gold .stat-value { color: var(--accent-gold); }
+.stat-card.green .stat-value { color: var(--accent-green); }
+.stat-card.purple .stat-value { color: var(--accent-purple); }
+.stat-change { font-size: 12px; color: var(--accent-green); font-weight: 600; }
+.stat-icon { position: absolute; top: 20px; right: 20px; font-size: 28px; opacity: .4; }
+
+/* ===================== HOME ===================== */
+.wolf-welcome {
+  background: linear-gradient(135deg, var(--bg-card), var(--bg-elevated));
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+}
+.wolf-welcome::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(0,212,255,.04), transparent);
+}
+.wolf-welcome-avatar {
+  font-size: 64px;
+  animation: wolf-breathe 4s ease-in-out infinite;
+  flex-shrink: 0;
+}
+@keyframes wolf-breathe {
+  0%,100%{transform:scale(1) rotate(-2deg)}
+  50%{transform:scale(1.06) rotate(2deg)}
+}
+.wolf-welcome-text h2 { font-size: 22px; font-weight: 900; margin-bottom: 6px; }
+.wolf-welcome-text h2 span { color: var(--accent-cyan); }
+.wolf-welcome-text p { color: var(--text-secondary); font-size: 15px; }
+.wolf-welcome-actions { margin-left: auto; display: flex; flex-direction: column; gap: 10px; }
+
+.btn-sm {
+  padding: 10px 20px;
+  border-radius: var(--radius-sm);
+  border: none;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all .2s;
+}
+.btn-sm.primary { background: var(--accent-cyan); color: #000; }
+.btn-sm.primary:hover { box-shadow: var(--glow-cyan); transform: translateY(-1px); }
+.btn-sm.outline { background: transparent; border: 1px solid var(--border); color: var(--text-primary); }
+.btn-sm.outline:hover { border-color: var(--accent-cyan); color: var(--accent-cyan); }
+
+.streak-card {
+  background: linear-gradient(135deg, rgba(245,197,66,.08), rgba(245,197,66,.03));
+  border: 1px solid var(--border-gold);
+  border-radius: var(--radius);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.streak-flame { font-size: 40px; animation: flame 2s ease-in-out infinite; }
+@keyframes flame {
+  0%,100%{transform:scale(1) rotate(-3deg)}
+  50%{transform:scale(1.1) rotate(3deg)}
+}
+.streak-info h3 { font-size: 32px; font-weight: 900; color: var(--accent-gold); }
+.streak-info p { color: var(--text-secondary); font-size: 13px; }
+
+.recent-moods {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+.mood-dot {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  position: relative;
+  border: 2px solid rgba(255,255,255,.1);
+}
+.mood-dot .day-label {
+  position: absolute;
+  bottom: -18px;
+  font-size: 10px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+/* ===================== MOOD CHECK ===================== */
+.emotion-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  margin: 24px 0;
+}
+.emotion-btn {
+  aspect-ratio: 1;
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-card);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all .3s;
+  position: relative;
+  overflow: hidden;
+}
+.emotion-btn:hover { transform: translateY(-4px); border-color: rgba(0,212,255,.4); }
+.emotion-btn.selected { border-color: var(--accent-cyan); background: rgba(0,212,255,.1); transform: scale(1.05); }
+.emotion-btn.selected::after {
+  content: '✓';
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  font-size: 12px;
+  color: var(--accent-cyan);
+  font-weight: 700;
+}
+.emotion-emoji { font-size: 36px; }
+.emotion-label { font-size: 12px; font-weight: 700; color: var(--text-secondary); }
+.emotion-btn.selected .emotion-label { color: var(--accent-cyan); }
+
+.intensity-slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--bg-deep);
+  outline: none;
+  margin: 12px 0;
+}
+.intensity-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--accent-cyan);
+  cursor: pointer;
+  box-shadow: var(--glow-cyan);
+}
+
+.mood-textarea {
+  width: 100%;
+  background: var(--bg-deep);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  color: var(--text-primary);
+  font-family: 'Nunito', sans-serif;
+  font-size: 15px;
+  resize: none;
+  outline: none;
+  transition: border-color .3s;
+  min-height: 80px;
+}
+.mood-textarea:focus { border-color: var(--accent-cyan); }
+.mood-textarea::placeholder { color: var(--text-muted); }
+
+.coins-reward {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(245,197,66,.1);
+  border: 1px solid var(--border-gold);
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent-gold);
+}
+
+/* MOOD HISTORY */
+.mood-history-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+.mood-history-row:last-child { border-bottom: none; }
+.mood-history-emoji { font-size: 24px; width: 36px; text-align: center; }
+.mood-history-info { flex: 1; }
+.mood-history-name { font-weight: 700; font-size: 14px; }
+.mood-history-date { font-size: 12px; color: var(--text-muted); }
+.mood-history-coins { color: var(--accent-gold); font-weight: 700; font-size: 13px; }
+
+/* ===================== WOLF AI ===================== */
+.wolfai-layout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 16px;
+  height: calc(100vh - 140px);
+}
+.wolfai-chat {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.wolfai-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.wolfai-status { width: 8px; height: 8px; background: var(--accent-green); border-radius: 50%; animation: pulse-green 2s ease-in-out infinite; }
+@keyframes pulse-green {
+  0%,100%{box-shadow: 0 0 0 0 rgba(0,230,118,.4)}
+  50%{box-shadow: 0 0 0 6px rgba(0,230,118,0)}
+}
+
+.wolfai-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.message {
+  max-width: 80%;
+  animation: msg-in .3s ease;
+}
+@keyframes msg-in {
+  from{transform:translateY(10px);opacity:0}
+  to{transform:translateY(0);opacity:1}
+}
+.message.wolf { align-self: flex-start; }
+.message.user { align-self: flex-end; }
+.msg-bubble {
+  padding: 12px 16px;
+  border-radius: 16px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.message.wolf .msg-bubble {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  border-bottom-left-radius: 4px;
+}
+.message.user .msg-bubble {
+  background: linear-gradient(135deg, var(--accent-cyan), #0099cc);
+  color: #000;
+  font-weight: 600;
+  border-bottom-right-radius: 4px;
+}
+.msg-avatar { font-size: 22px; margin-bottom: 4px; }
+.message.user .msg-avatar { text-align: right; }
+
+.wolfai-quick-replies {
+  padding: 12px 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  border-top: 1px solid var(--border);
+}
+.quick-reply {
+  padding: 7px 14px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: var(--bg-elevated);
+  cursor: pointer;
+  transition: all .2s;
+}
+.quick-reply:hover { border-color: var(--accent-cyan); color: var(--accent-cyan); background: rgba(0,212,255,.06); }
+
+.wolfai-input-area {
+  padding: 14px 20px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.wolfai-input {
+  flex: 1;
+  background: var(--bg-deep);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  color: var(--text-primary);
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px;
+  outline: none;
+  transition: border-color .2s;
+}
+.wolfai-input:focus { border-color: var(--accent-cyan); }
+.wolfai-send {
+  width: 44px;
+  height: 44px;
+  background: var(--accent-cyan);
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 18px;
+  transition: all .2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.wolfai-send:hover { box-shadow: var(--glow-cyan); transform: scale(1.05); }
+
+/* BREATHING WIDGET */
+.breathing-widget {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  text-align: center;
+}
+.breathing-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,212,255,.2), rgba(0,212,255,.05));
+  border: 2px solid var(--accent-cyan);
+  margin: 16px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  cursor: pointer;
+  transition: all 4s ease-in-out;
+}
+.breathing-circle.inhale {
+  transform: scale(1.4);
+  box-shadow: 0 0 40px rgba(0,212,255,.4);
+  background: radial-gradient(circle, rgba(0,212,255,.3), rgba(0,212,255,.1));
+}
+.breathing-circle.exhale {
+  transform: scale(0.8);
+  box-shadow: 0 0 10px rgba(0,212,255,.1);
+}
+.breathing-label {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--accent-cyan);
+  margin-top: 8px;
+  min-height: 28px;
+  transition: all .5s;
+}
+
+/* WOLFAI SIDE PANEL */
+.wolfai-side { display: flex; flex-direction: column; gap: 12px; overflow-y: auto; }
+
+/* ===================== RETOS ===================== */
+.retos-filters {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.filter-btn {
+  padding: 8px 16px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all .2s;
+}
+.filter-btn.active {
+  background: var(--accent-cyan);
+  border-color: var(--accent-cyan);
+  color: #000;
+}
+
+.reto-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  transition: all .2s;
+  position: relative;
+  overflow: hidden;
+}
+.reto-card:hover { border-color: rgba(0,212,255,.3); transform: translateY(-2px); }
+.reto-card.completado { border-color: rgba(0,230,118,.2); background: rgba(0,230,118,.03); }
+.reto-card.en-progreso { border-color: rgba(0,212,255,.3); background: rgba(0,212,255,.03); }
+
+.reto-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 12px; }
+.reto-icon { font-size: 28px; }
+.reto-coins { font-size: 13px; font-weight: 700; color: var(--accent-gold); }
+.reto-title { font-size: 16px; font-weight: 800; margin-bottom: 6px; }
+.reto-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 16px; }
+
+.progress-bar {
+  height: 6px;
+  background: var(--bg-deep);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+  border-radius: 3px;
+  transition: width 1s ease;
+}
+.progress-info { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-muted); }
+
+.reto-actions { display: flex; gap: 8px; margin-top: 14px; }
+.btn-reto {
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  border: none;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all .2s;
+}
+.btn-reto.accept { background: var(--accent-cyan); color: #000; }
+.btn-reto.accept:hover { box-shadow: var(--glow-cyan); }
+.btn-reto.complete { background: var(--accent-green); color: #000; }
+.btn-reto.view { background: var(--bg-elevated); color: var(--text-secondary); border: 1px solid var(--border); }
+
+/* ===================== WALLET ===================== */
+.wallet-header-card {
+  background: linear-gradient(135deg, rgba(245,197,66,.12), rgba(245,197,66,.04));
+  border: 1px solid var(--border-gold);
+  border-radius: var(--radius);
+  padding: 32px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+.wallet-balance { font-size: 64px; font-weight: 900; color: var(--accent-gold); }
+.wallet-balance-label { color: var(--text-secondary); font-size: 16px; }
+.wallet-next { margin-top: 16px; }
+
+.transaction-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+.transaction-row:last-child { border-bottom: none; }
+.tx-icon { font-size: 20px; width: 40px; height: 40px; background: var(--bg-elevated); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.tx-info { flex: 1; }
+.tx-name { font-weight: 700; font-size: 14px; }
+.tx-hash { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.tx-date { font-size: 12px; color: var(--text-muted); }
+.tx-amount { font-weight: 900; font-size: 16px; }
+.tx-amount.positive { color: var(--accent-gold); }
+.tx-amount.negative { color: var(--text-muted); }
+
+/* ===================== PANEL DECE ===================== */
+.alert-card {
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+  transition: all .2s;
+}
+.alert-card:hover { transform: translateX(4px); }
+.alert-card.alta { background: rgba(255,77,109,.08); border: 1px solid rgba(255,77,109,.25); }
+.alert-card.media { background: rgba(245,197,66,.08); border: 1px solid rgba(245,197,66,.2); }
+.alert-card.baja { background: rgba(0,212,255,.06); border: 1px solid rgba(0,212,255,.15); }
+
+.alert-indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.alert-indicator.alta { background: var(--accent-red); animation: blink-red 1s ease-in-out infinite; }
+@keyframes blink-red {
+  0%,100%{opacity:1;box-shadow: 0 0 0 0 rgba(255,77,109,.4)}
+  50%{opacity:.6;box-shadow: 0 0 0 6px rgba(255,77,109,0)}
+}
+.alert-indicator.media { background: var(--accent-gold); }
+.alert-indicator.baja { background: var(--accent-cyan); }
+
+.alert-info { flex: 1; }
+.alert-name { font-weight: 800; font-size: 15px; }
+.alert-meta { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+.alert-time { font-size: 12px; color: var(--text-muted); }
+.alert-badge { padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; }
+.alert-badge.alta { background: rgba(255,77,109,.2); color: var(--accent-red); }
+.alert-badge.media { background: rgba(245,197,66,.2); color: var(--accent-gold); }
+.alert-badge.baja { background: rgba(0,212,255,.15); color: var(--accent-cyan); }
+
+/* HEAT MAP */
+.heatmap-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 6px;
+  margin: 16px 0;
+}
+.heatmap-cell {
+  aspect-ratio: 1;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  color: rgba(0,0,0,.7);
+  cursor: pointer;
+  transition: all .2s;
+  position: relative;
+}
+.heatmap-cell:hover { transform: scale(1.2); z-index: 10; }
+.heatmap-cell:hover::after {
+  content: attr(data-name);
+  position: absolute;
+  top: -28px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  white-space: nowrap;
+  color: var(--text-primary);
+}
+.heatmap-cell.alegre { background: linear-gradient(135deg, #00e676, #00b050); }
+.heatmap-cell.tranquilo { background: linear-gradient(135deg, #00d4ff, #0099cc); }
+.heatmap-cell.neutro { background: linear-gradient(135deg, #7a9bbf, #4a6a8a); }
+.heatmap-cell.triste { background: linear-gradient(135deg, #f5c542, #cc9900); }
+.heatmap-cell.ansioso { background: linear-gradient(135deg, #ff9f43, #cc6600); }
+.heatmap-cell.enojado { background: linear-gradient(135deg, #ff4d6d, #cc2244); }
+
+/* ===================== TIENDA ===================== */
+.shop-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: all .2s;
+}
+.shop-item:hover { border-color: rgba(0,212,255,.3); transform: translateY(-3px); box-shadow: var(--shadow); }
+.shop-item-preview {
+  aspect-ratio: 16/9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 56px;
+}
+.shop-item-info { padding: 16px; }
+.shop-item-name { font-weight: 800; font-size: 15px; margin-bottom: 4px; }
+.shop-item-desc { font-size: 12px; color: var(--text-secondary); margin-bottom: 12px; }
+.shop-item-footer { display: flex; align-items: center; justify-content: space-between; }
+.shop-item-price { font-size: 16px; font-weight: 900; color: var(--accent-gold); }
+.btn-buy {
+  padding: 8px 16px;
+  background: var(--accent-gold);
+  color: #000;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all .2s;
+}
+.btn-buy:hover { box-shadow: var(--glow-gold); transform: scale(1.05); }
+.btn-buy:disabled { opacity: .4; cursor: not-allowed; }
+
+/* ===================== PROYECCIÓN ===================== */
+.chart-container {
+  position: relative;
+  height: 250px;
+}
+
+/* ===================== EQUIPO ===================== */
+.team-member {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px;
+  border-radius: var(--radius-sm);
+  transition: background .2s;
+  cursor: default;
+}
+.team-member:hover { background: var(--bg-hover); }
+.team-rank {
+  width: 28px;
+  text-align: center;
+  font-weight: 900;
+  font-size: 18px;
+  color: var(--text-muted);
+}
+.team-rank.r1 { color: var(--accent-gold); }
+.team-rank.r2 { color: #a8a8a8; }
+.team-rank.r3 { color: #c47a5a; }
+.team-avatar-big {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+.team-info { flex: 1; }
+.team-name { font-weight: 800; font-size: 15px; }
+.team-badges { display: flex; gap: 4px; margin-top: 4px; }
+.badge-mini {
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 700;
+  background: rgba(0,212,255,.1);
+  color: var(--accent-cyan);
+}
+.team-score { font-size: 20px; font-weight: 900; color: var(--accent-gold); }
+
+/* ===================== PERFIL ===================== */
+.profile-hero {
+  background: linear-gradient(135deg, var(--bg-card), var(--bg-elevated));
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 20px;
+}
+.profile-avatar-lg {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  flex-shrink: 0;
+  position: relative;
+}
+.profile-level-badge {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  background: var(--accent-gold);
+  color: #000;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 900;
+  border: 2px solid var(--bg-deep);
+}
+.profile-info h2 { font-size: 24px; font-weight: 900; }
+.profile-info .handle { color: var(--accent-cyan); font-size: 14px; margin: 2px 0; }
+.profile-info .joined { color: var(--text-muted); font-size: 13px; }
+.profile-stats { display: flex; gap: 24px; margin-left: auto; }
+.profile-stat-item { text-align: center; }
+.profile-stat-item .pval { font-size: 24px; font-weight: 900; }
+.profile-stat-item .plabel { font-size: 11px; color: var(--text-muted); text-transform: uppercase; }
+
+.achievement {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+  transition: all .2s;
+}
+.achievement:hover { border-color: rgba(245,197,66,.3); }
+.achievement.locked { opacity: .4; filter: grayscale(.8); }
+.achievement-icon { font-size: 28px; }
+.achievement-name { font-weight: 800; font-size: 14px; }
+.achievement-desc { font-size: 12px; color: var(--text-secondary); }
+
+/* ===================== COIN ANIMATION ===================== */
+.coins-anim-container {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.flying-coin {
+  position: absolute;
+  font-size: 20px;
+  animation: fly-coin .8s ease-out forwards;
+}
+@keyframes fly-coin {
+  0%{transform:translateY(0) scale(1) rotate(0deg);opacity:1}
+  100%{transform:translateY(-80px) scale(.3) rotate(360deg);opacity:0}
+}
+
+/* ===================== MODALS / ALERTS ===================== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+  animation: fade-in .2s ease;
+}
+@keyframes fade-in {
+  from{opacity:0}
+  to{opacity:1}
+}
+.modal-overlay.hidden { display: none; }
+
+.modal {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px;
+  width: 90%;
+  max-width: 460px;
+  animation: modal-in .3s ease;
+  text-align: center;
+}
+@keyframes modal-in {
+  from{transform:scale(.9) translateY(20px);opacity:0}
+  to{transform:scale(1) translateY(0);opacity:1}
+}
+.modal .modal-icon { font-size: 64px; margin-bottom: 16px; }
+.modal h3 { font-size: 22px; font-weight: 900; margin-bottom: 8px; }
+.modal p { color: var(--text-secondary); margin-bottom: 24px; line-height: 1.6; }
+.modal-actions { display: flex; gap: 10px; justify-content: center; }
+
+/* NOTIFICATION */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--accent-cyan);
+  border-radius: var(--radius-sm);
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 2000;
+  animation: toast-in .3s ease;
+  box-shadow: var(--glow-cyan);
+  min-width: 280px;
+}
+.toast.hidden { display: none; }
+.toast.error { border-color: var(--accent-red); box-shadow: 0 0 20px rgba(255,77,109,.3); }
+.toast-icon { font-size: 20px; }
+.toast-text { flex: 1; font-weight: 700; font-size: 14px; }
+@keyframes toast-in {
+  from{transform:translateX(100px);opacity:0}
+  to{transform:translateX(0);opacity:1}
+}
+
+/* === DECE ALERT BANNER === */
+.dece-alert-banner {
+  background: rgba(255,77,109,.1);
+  border: 1px solid rgba(255,77,109,.4);
+  border-radius: var(--radius-sm);
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  animation: pulse-alert 2s ease-in-out infinite;
+}
+@keyframes pulse-alert {
+  0%,100%{border-color:rgba(255,77,109,.4)}
+  50%{border-color:rgba(255,77,109,.8);box-shadow: 0 0 20px rgba(255,77,109,.15)}
+}
+.dece-alert-banner.hidden { display: none; }
+
+/* ===================== RESPONSIVE ===================== */
+@media (max-width: 1024px) {
+  .grid-4 { grid-template-columns: repeat(2,1fr); }
+  .wolfai-layout { grid-template-columns: 1fr; }
+  .wolfai-side { display: none; }
+}
+@media (max-width: 768px) {
+  :root { --sidebar-w: 60px; }
+  .sidebar-logo .brand, .sidebar-logo .tagline, .sidebar-coins, .nav-section, .nav-item span:last-child, .sidebar-user .user-name, .sidebar-user .user-role { display: none; }
+  .nav-item { justify-content: center; padding: 12px; }
+  .nav-icon { width: auto; font-size: 20px; }
+  .section { padding: 20px; }
+  .grid-3, .grid-2 { grid-template-columns: 1fr; }
+  .emotion-grid { grid-template-columns: repeat(3,1fr); }
+}
+</style>
+</head>
+<body>
+
+<!-- ==================== LOGIN PAGE ==================== -->
+<div class="page active" id="page-login">
+  <div class="login-particles" id="particles"></div>
+  <div class="login-box" id="login-container">
+    <!-- Step 1: Role -->
+    <div id="step-role">
+      <div class="login-logo">
+        <span class="wolf-emoji-big">🐺</span>
+        <h1>Los Wolves</h1>
+        <p>Tu espacio seguro de bienestar emocional</p>
+      </div>
+      <p style="text-align:center;color:var(--text-secondary);font-size:14px;margin-bottom:20px;font-weight:600">¿Quién eres en la manada?</p>
+      <div class="role-selector">
+        <button class="role-btn" id="role-estudiante" onclick="selectRole('estudiante')">
+          <span>🧑‍🎓</span>
+          Estudiante
+        </button>
+        <button class="role-btn" id="role-dece" onclick="selectRole('dece')">
+          <span>🏥</span>
+          Consejero DECE
+        </button>
+      </div>
+      <button class="btn-primary" onclick="goToStep2()">Continuar →</button>
+    </div>
+
+    <!-- Step 2: Login/Register -->
+    <div id="step-auth" style="display:none">
+      <div class="login-logo">
+        <span class="wolf-emoji-big" id="step2-avatar">🐺</span>
+        <h1 id="step2-title">Bienvenido, Lobo</h1>
+        <p id="step2-sub">Ingresa a tu manada</p>
+      </div>
+      <div class="login-tabs">
+        <div class="login-tab active" onclick="setAuthTab('login',this)">Ingresar</div>
+        <div class="login-tab" onclick="setAuthTab('register',this)">Registrarse</div>
+      </div>
+      <div class="form-group" id="field-nombre" style="display:none">
+        <label>Nombre en la Manada</label>
+        <input type="text" placeholder="Ej: Lobo Veloz" id="input-nombre">
+      </div>
+      <div class="form-group">
+        <label>Correo Electrónico</label>
+        <input type="email" placeholder="tu@correo.com" id="input-email" value="demo@wolves.ec">
+      </div>
+      <div class="form-group">
+        <label>Contraseña</label>
+        <input type="password" placeholder="••••••••" id="input-pass" value="demo123">
+      </div>
+      <button class="btn-primary" onclick="doLogin()">Entrar a la Manada 🐺</button>
+      <p style="text-align:center;color:var(--text-muted);font-size:12px;margin-top:16px">
+        <button onclick="goToStep1()" style="background:none;border:none;color:var(--accent-cyan);cursor:pointer;font-size:12px;font-family:'Nunito',sans-serif">← Cambiar rol</button>
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== APP PAGE ==================== -->
+<div class="page" id="page-app">
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="sidebar-logo">
+      <span class="wolf-icon">🐺</span>
+      <div>
+        <div class="brand">Los Wolves</div>
+        <div class="tagline">Juntos somos más fuertes</div>
+      </div>
+    </div>
+    <div class="sidebar-coins">
+      <span class="coins-icon">🪙</span>
+      <div>
+        <div class="coins-amount" id="sidebar-coins">0</div>
+        <div class="coins-label">Eight-Coins</div>
+      </div>
+    </div>
+    <div class="sidebar-nav">
+      <div class="nav-section">Principal</div>
+      <div class="nav-item active" onclick="navigate('home',this)">
+        <span class="nav-icon">🏠</span><span>Inicio</span>
+      </div>
+      <div class="nav-item" onclick="navigate('mood',this)">
+        <span class="nav-icon">💭</span><span>Mood Check</span>
+      </div>
+      <div class="nav-item" onclick="navigate('wolfai',this)">
+        <span class="nav-icon">🤖</span><span>Wolf AI</span>
+      </div>
+      <div class="nav-section">Actividades</div>
+      <div class="nav-item" onclick="navigate('retos',this)">
+        <span class="nav-icon">🎯</span><span>Retos</span>
+      </div>
+      <div class="nav-item" onclick="navigate('wallet',this)">
+        <span class="nav-icon">💰</span><span>Wallet</span>
+      </div>
+      <div class="nav-item" onclick="navigate('tienda',this)">
+        <span class="nav-icon">🛍️</span><span>Tienda</span>
+      </div>
+      <div class="nav-section">Comunidad</div>
+      <div class="nav-item" onclick="navigate('equipo',this)">
+        <span class="nav-icon">🫂</span><span>Mi Manada</span>
+      </div>
+      <div class="nav-section" id="nav-dece-section" style="display:none">DECE</div>
+      <div class="nav-item" id="nav-dece" onclick="navigate('dece',this)" style="display:none">
+        <span class="nav-icon">📊</span><span>Panel DECE</span>
+      </div>
+      <div class="nav-item" onclick="navigate('proyeccion',this)">
+        <span class="nav-icon">📈</span><span>Proyección</span>
+      </div>
+    </div>
+    <div class="sidebar-user">
+      <div class="user-avatar" id="sidebar-avatar">🐺</div>
+      <div>
+        <div class="user-name" id="sidebar-name">Usuario</div>
+        <div class="user-role" id="sidebar-role">Estudiante</div>
+      </div>
+      <span class="sidebar-logout" onclick="doLogout()" title="Cerrar sesión">⏏</span>
+    </div>
+    <div style="padding:0 16px 12px;display:none" id="nav-perfil-wrap">
+      <div class="nav-item" onclick="navigate('perfil',this)">
+        <span class="nav-icon">👤</span><span>Mi Perfil</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+
+    <!-- ===== HOME ===== -->
+    <div class="section active" id="sec-home">
+      <div class="topbar">
+        <div>
+          <div class="topbar-title">Buenos días, <span id="home-name">Lobo</span> 👋</div>
+          <div class="topbar-subtitle">Manada Los Wolves · Nivel 7</div>
+        </div>
+        <div class="topbar-actions">
+          <span class="badge badge-gold">🔥 <span id="home-streak">7</span> días de racha</span>
+          <span class="badge badge-cyan">⚡ Activo hoy</span>
+        </div>
+      </div>
+
+      <!-- Wolf Welcome -->
+      <div class="wolf-welcome">
+        <span class="wolf-welcome-avatar">🐺</span>
+        <div class="wolf-welcome-text">
+          <h2>¿Cómo estás hoy, <span id="welcome-name">compañero</span>?</h2>
+          <p>Tu bienestar importa. Registra cómo te sientes hoy y gana 10 Eight-Coins 🪙</p>
+          <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+            <span class="badge badge-green">✓ 7 días seguidos</span>
+            <span class="badge badge-gold">🪙 340 coins esta semana</span>
+          </div>
+        </div>
+        <div class="wolf-welcome-actions">
+          <button class="btn-sm primary" onclick="navigate('mood',document.querySelector('[onclick*=mood]'))">Registrar Mood 💭</button>
+          <button class="btn-sm outline" onclick="navigate('wolfai',document.querySelector('[onclick*=wolfai]'))">Hablar con Wolf AI 🤖</button>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="grid-4" style="margin-bottom:20px">
+        <div class="stat-card cyan">
+          <div class="stat-label">Estados registrados</div>
+          <div class="stat-value" id="stat-registros">47</div>
+          <div class="stat-change">↑ 3 esta semana</div>
+          <span class="stat-icon">💭</span>
+        </div>
+        <div class="stat-card gold">
+          <div class="stat-label">Eight-Coins</div>
+          <div class="stat-value" id="stat-coins-home">1,240</div>
+          <div class="stat-change">↑ +120 hoy</div>
+          <span class="stat-icon">🪙</span>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-label">Retos completados</div>
+          <div class="stat-value">12</div>
+          <div class="stat-change">↑ 2 nuevos</div>
+          <span class="stat-icon">🎯</span>
+        </div>
+        <div class="stat-card purple">
+          <div class="stat-label">Sesiones Wolf AI</div>
+          <div class="stat-value">28</div>
+          <div class="stat-change">↑ 5 esta semana</div>
+          <span class="stat-icon">🤖</span>
+        </div>
+      </div>
+
+      <!-- Bottom row -->
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">📅 Emociones esta semana</div>
+          <div class="recent-moods" style="margin-top:20px">
+            <div class="mood-dot" style="background:rgba(0,230,118,.15);border-color:#00e676">😊<div class="day-label">Lun</div></div>
+            <div class="mood-dot" style="background:rgba(0,212,255,.15);border-color:#00d4ff">😌<div class="day-label">Mar</div></div>
+            <div class="mood-dot" style="background:rgba(245,197,66,.15);border-color:#f5c542">😰<div class="day-label">Mié</div></div>
+            <div class="mood-dot" style="background:rgba(0,230,118,.15);border-color:#00e676">😄<div class="day-label">Jue</div></div>
+            <div class="mood-dot" style="background:rgba(0,230,118,.15);border-color:#00e676">😊<div class="day-label">Vie</div></div>
+            <div class="mood-dot" style="background:rgba(0,212,255,.15);border-color:#00d4ff">😌<div class="day-label">Sáb</div></div>
+            <div class="mood-dot" style="border-color:var(--text-muted);opacity:.4">?<div class="day-label">Hoy</div></div>
+          </div>
+          <div style="height:180px;margin-top:20px"><canvas id="home-chart"></canvas></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div class="streak-card">
+            <span class="streak-flame">🔥</span>
+            <div class="streak-info">
+              <h3 id="streak-num">7</h3>
+              <p>días de racha activa</p>
+              <div style="margin-top:6px;display:flex;gap:4px">
+                <div style="width:20px;height:6px;background:var(--accent-gold);border-radius:3px"></div>
+                <div style="width:20px;height:6px;background:var(--accent-gold);border-radius:3px"></div>
+                <div style="width:20px;height:6px;background:var(--accent-gold);border-radius:3px"></div>
+                <div style="width:20px;height:6px;background:var(--accent-gold);border-radius:3px"></div>
+                <div style="width:20px;height:6px;background:var(--accent-gold);border-radius:3px"></div>
+                <div style="width:20px;height:6px;background:var(--accent-gold);border-radius:3px"></div>
+                <div style="width:20px;height:6px;background:var(--accent-gold);border-radius:3px"></div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">🏆 Logros recientes</div>
+            <div style="margin-top:12px;display:flex;flex-direction:column;gap:8px">
+              <div class="achievement"><span class="achievement-icon">🐺</span><div><div class="achievement-name">Primera Manada</div><div class="achievement-desc">Unirse a Los Wolves</div></div></div>
+              <div class="achievement"><span class="achievement-icon">🔥</span><div><div class="achievement-name">Racha de 7 días</div><div class="achievement-desc">Registra 7 días seguidos</div></div></div>
+              <div class="achievement"><span class="achievement-icon">💬</span><div><div class="achievement-name">Conversador</div><div class="achievement-desc">25 sesiones con Wolf AI</div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== MOOD CHECK ===== -->
+    <div class="section" id="sec-mood">
+      <div class="topbar">
+        <div>
+          <div class="topbar-title">💭 Mood <span>Check</span></div>
+          <div class="topbar-subtitle">¿Cómo te sientes hoy? Tus emociones importan</div>
+        </div>
+        <div class="topbar-actions">
+          <span class="coins-reward">🪙 +10 coins al registrar</span>
+        </div>
+      </div>
+
+      <!-- DECE ALERT BANNER (hidden by default) -->
+      <div class="dece-alert-banner hidden" id="dece-alert-banner">
+        <span style="font-size:20px">🚨</span>
+        <div style="flex:1">
+          <div style="font-weight:800;color:var(--accent-red)">Alerta enviada al DECE</div>
+          <div style="font-size:13px;color:var(--text-secondary)">Se han detectado 3 emociones negativas seguidas. Tu consejero fue notificado.</div>
+        </div>
+      </div>
+
+      <div class="grid-2" style="gap:20px">
+        <div class="card">
+          <div class="card-title">Selecciona tu emoción de hoy</div>
+          <div class="emotion-grid">
+            <button class="emotion-btn" onclick="selectEmotion('alegre','😄','positive',this)">
+              <span class="emotion-emoji">😄</span>
+              <span class="emotion-label">Alegre</span>
+            </button>
+            <button class="emotion-btn" onclick="selectEmotion('tranquilo','😌','positive',this)">
+              <span class="emotion-emoji">😌</span>
+              <span class="emotion-label">Tranquilo</span>
+            </button>
+            <button class="emotion-btn" onclick="selectEmotion('motivado','💪','positive',this)">
+              <span class="emotion-emoji">💪</span>
+              <span class="emotion-label">Motivado</span>
+            </button>
+            <button class="emotion-btn" onclick="selectEmotion('curioso','🤔','positive',this)">
+              <span class="emotion-emoji">🤔</span>
+              <span class="emotion-label">Curioso</span>
+            </button>
+            <button class="emotion-btn" onclick="selectEmotion('neutro','😐','neutral',this)">
+              <span class="emotion-emoji">😐</span>
+              <span class="emotion-label">Neutro</span>
+            </button>
+            <button class="emotion-btn" onclick="selectEmotion('triste','😢','negative',this)">
+              <span class="emotion-emoji">😢</span>
+              <span class="emotion-label">Triste</span>
+            </button>
+            <button class="emotion-btn" onclick="selectEmotion('ansioso','😰','negative',this)">
+              <span class="emotion-emoji">😰</span>
+              <span class="emotion-label">Ansioso</span>
+            </button>
+            <button class="emotion-btn" onclick="selectEmotion('enojado','😠','negative',this)">
+              <span class="emotion-emoji">😠</span>
+              <span class="emotion-label">Enojado</span>
+            </button>
+            <button class="emotion-btn" onclick="selectEmotion('cansado','😴','negative',this)">
+              <span class="emotion-emoji">😴</span>
+              <span class="emotion-label">Cansado</span>
+            </button>
+            <button class="emotion-btn" onclick="selectEmotion('agradecido','🙏','positive',this)">
+              <span class="emotion-emoji">🙏</span>
+              <span class="emotion-label">Agradecido</span>
+            </button>
+          </div>
+
+          <div style="margin-bottom:16px">
+            <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+              <span style="font-size:13px;font-weight:700;color:var(--text-secondary)">INTENSIDAD</span>
+              <span style="font-size:13px;font-weight:700;color:var(--accent-cyan)" id="intensity-val">3/5</span>
+            </div>
+            <input type="range" min="1" max="5" value="3" class="intensity-slider" id="intensity-range" oninput="document.getElementById('intensity-val').textContent=this.value+'/5'">
+          </div>
+
+          <div style="margin-bottom:20px">
+            <div style="font-size:13px;font-weight:700;color:var(--text-secondary);margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em">¿Quieres contarnos más? (opcional)</div>
+            <textarea class="mood-textarea" placeholder="Hoy me siento así porque..." id="mood-note"></textarea>
+          </div>
+
+          <button class="btn-primary" onclick="submitMood()">Registrar mi estado de hoy 💭</button>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div class="card">
+            <div class="card-title">📊 Historial de esta semana</div>
+            <div style="height:200px;margin-top:12px"><canvas id="mood-week-chart"></canvas></div>
+          </div>
+          <div class="card">
+            <div class="card-title">📋 Últimos registros</div>
+            <div id="mood-history-list">
+              <div class="mood-history-row">
+                <span class="mood-history-emoji">😊</span>
+                <div class="mood-history-info"><div class="mood-history-name">Alegre · Intensidad 4/5</div><div class="mood-history-date">Ayer, 08:42</div></div>
+                <span class="mood-history-coins">+10 🪙</span>
+              </div>
+              <div class="mood-history-row">
+                <span class="mood-history-emoji">😰</span>
+                <div class="mood-history-info"><div class="mood-history-name">Ansioso · Intensidad 3/5</div><div class="mood-history-date">Hace 2 días</div></div>
+                <span class="mood-history-coins">+10 🪙</span>
+              </div>
+              <div class="mood-history-row">
+                <span class="mood-history-emoji">😄</span>
+                <div class="mood-history-info"><div class="mood-history-name">Alegre · Intensidad 5/5</div><div class="mood-history-date">Hace 3 días</div></div>
+                <span class="mood-history-coins">+10 🪙</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== WOLF AI ===== -->
+    <div class="section" id="sec-wolfai">
+      <div class="topbar">
+        <div>
+          <div class="topbar-title">🤖 Wolf <span>AI</span></div>
+          <div class="topbar-subtitle">Tu compañero emocional inteligente</div>
+        </div>
+        <div class="topbar-actions">
+          <span class="badge badge-green">● En línea</span>
+          <span class="coins-reward">🪙 +15 por sesión</span>
+        </div>
+      </div>
+
+      <div class="wolfai-layout">
+        <!-- CHAT -->
+        <div class="wolfai-chat">
+          <div class="wolfai-header">
+            <span style="font-size:28px">🐺</span>
+            <div>
+              <div style="font-weight:800;font-size:15px">Wolf AI</div>
+              <div style="font-size:12px;color:var(--text-secondary);display:flex;align-items:center;gap:6px">
+                <span class="wolfai-status"></span> Activo · Modo empático
+              </div>
+            </div>
+            <div style="margin-left:auto;display:flex;gap:8px">
+              <span class="badge badge-cyan">Modo: Apoyo emocional</span>
+            </div>
+          </div>
+
+          <div class="wolfai-messages" id="chat-messages">
+            <div class="message wolf">
+              <div class="msg-avatar">🐺</div>
+              <div class="msg-bubble">¡Hola! Soy Wolf AI, tu compañero emocional. ¿Cómo te sientes hoy? Estoy aquí para escucharte sin juzgarte. 🐺💙</div>
+            </div>
+            <div class="message wolf">
+              <div class="msg-bubble">Recuerda: todo lo que hablamos aquí es <strong>privado y seguro</strong>. Solo en caso de que detecte que necesitas ayuda urgente, notificaré a tu consejero DECE. ¿Comenzamos?</div>
+            </div>
+          </div>
+
+          <div class="wolfai-quick-replies" id="quick-replies">
+            <button class="quick-reply" onclick="sendQuick('Me siento ansioso hoy 😰')">Me siento ansioso 😰</button>
+            <button class="quick-reply" onclick="sendQuick('Quiero hacer el ejercicio de respiración')">Ejercicio de respiración 🌬️</button>
+            <button class="quick-reply" onclick="sendQuick('Tengo problemas con mis amigos')">Problemas con amigos 👥</button>
+            <button class="quick-reply" onclick="sendQuick('Estoy muy estresado por los exámenes')">Estrés por exámenes 📚</button>
+            <button class="quick-reply" onclick="sendQuick('Me siento solo últimamente')">Me siento solo 🌑</button>
+          </div>
+
+          <div class="wolfai-input-area">
+            <input class="wolfai-input" type="text" placeholder="Escribe cómo te sientes..." id="chat-input" onkeydown="if(event.key==='Enter')sendMessage()">
+            <button class="wolfai-send" onclick="sendMessage()">➤</button>
+          </div>
+        </div>
+
+        <!-- SIDE PANEL -->
+        <div class="wolfai-side">
+          <div class="breathing-widget">
+            <div class="card-title">🌬️ Ejercicio de Respiración</div>
+            <div class="breathing-circle" id="breathe-circle" onclick="toggleBreathing()">🐺</div>
+            <div class="breathing-label" id="breathe-label">Toca para comenzar</div>
+            <p style="font-size:12px;color:var(--text-muted);margin-top:8px">Inhala 4s · Mantén 4s · Exhala 4s</p>
+          </div>
+          <div class="card">
+            <div class="card-title">💡 Recursos recomendados</div>
+            <div style="margin-top:12px;display:flex;flex-direction:column;gap:10px" id="ai-recommendations">
+              <div style="padding:10px;background:var(--bg-elevated);border-radius:var(--radius-sm);border:1px solid var(--border)">
+                <div style="font-weight:700;font-size:13px;margin-bottom:3px">🎯 Reto del día</div>
+                <div style="font-size:12px;color:var(--text-secondary)">Escribe 3 cosas por las que estás agradecido</div>
+              </div>
+              <div style="padding:10px;background:var(--bg-elevated);border-radius:var(--radius-sm);border:1px solid var(--border)">
+                <div style="font-weight:700;font-size:13px;margin-bottom:3px">🎵 Música para calmar</div>
+                <div style="font-size:12px;color:var(--text-secondary)">Lo-fi beats para concentrarse</div>
+              </div>
+              <div style="padding:10px;background:var(--bg-elevated);border-radius:var(--radius-sm);border:1px solid var(--border)">
+                <div style="font-weight:700;font-size:13px;margin-bottom:3px">📖 Técnica 5-4-3-2-1</div>
+                <div style="font-size:12px;color:var(--text-secondary)">Anclaje sensorial para la ansiedad</div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">⚠️ Aviso importante</div>
+            <p style="font-size:12px;color:var(--text-secondary);line-height:1.6;margin-top:8px">Wolf AI es un acompañante emocional, no reemplaza la atención profesional. Si estás en crisis, habla con tu consejero DECE o llama al <strong style="color:var(--accent-cyan)">171</strong>.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== RETOS ===== -->
+    <div class="section" id="sec-retos">
+      <div class="topbar">
+        <div>
+          <div class="topbar-title">🎯 <span>Retos</span> de bienestar</div>
+          <div class="topbar-subtitle">Supérate cada día con tu manada</div>
+        </div>
+        <div class="topbar-actions">
+          <span class="badge badge-green">12 completados</span>
+          <span class="badge badge-gold">🪙 1,240 ganados</span>
+        </div>
+      </div>
+
+      <div class="retos-filters">
+        <button class="filter-btn active" onclick="filterRetos('todos',this)">Todos</button>
+        <button class="filter-btn" onclick="filterRetos('activos',this)">En progreso</button>
+        <button class="filter-btn" onclick="filterRetos('disponibles',this)">Disponibles</button>
+        <button class="filter-btn" onclick="filterRetos('completados',this)">Completados</button>
+      </div>
+
+      <div class="grid-2" id="retos-grid">
+        <div class="reto-card en-progreso" data-status="activos">
+          <div class="reto-header">
+            <span class="reto-icon">🌅</span>
+            <span class="reto-coins">🪙 +40 coins</span>
+          </div>
+          <div class="reto-title">Madrugador Emocional</div>
+          <div class="reto-desc">Registra tu estado emocional antes de las 9am durante 5 días seguidos.</div>
+          <div class="progress-bar"><div class="progress-fill" style="width:60%"></div></div>
+          <div class="progress-info"><span>3 de 5 días</span><span>60%</span></div>
+          <div class="reto-actions">
+            <button class="btn-reto view">Ver detalles</button>
+            <button class="btn-reto complete" onclick="completeReto(this, 40)">✓ Completar hoy</button>
+          </div>
+        </div>
+
+        <div class="reto-card" data-status="disponibles">
+          <div class="reto-header">
+            <span class="reto-icon">📝</span>
+            <span class="reto-coins">🪙 +25 coins</span>
+          </div>
+          <div class="reto-title">Diario de Gratitud</div>
+          <div class="reto-desc">Escribe 3 cosas por las que te sientes agradecido hoy en tu sesión de Wolf AI.</div>
+          <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+          <div class="progress-info"><span>0 de 1 día</span><span>0%</span></div>
+          <div class="reto-actions">
+            <button class="btn-reto accept" onclick="acceptReto(this, 25)">⚡ Aceptar reto</button>
+          </div>
+        </div>
+
+        <div class="reto-card" data-status="disponibles">
+          <div class="reto-header">
+            <span class="reto-icon">🌬️</span>
+            <span class="reto-coins">🪙 +20 coins</span>
+          </div>
+          <div class="reto-title">Respiración Consciente</div>
+          <div class="reto-desc">Completa el ejercicio de respiración guiada con Wolf AI durante 3 días seguidos.</div>
+          <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+          <div class="progress-info"><span>0 de 3 días</span><span>0%</span></div>
+          <div class="reto-actions">
+            <button class="btn-reto accept" onclick="acceptReto(this, 20)">⚡ Aceptar reto</button>
+          </div>
+        </div>
+
+        <div class="reto-card" data-status="disponibles">
+          <div class="reto-header">
+            <span class="reto-icon">🤝</span>
+            <span class="reto-coins">🪙 +100 coins</span>
+          </div>
+          <div class="reto-title">Apoyo a la Manada</div>
+          <div class="reto-desc">Reto colaborativo: Tú y otro estudiante se apoyan mutuamente durante 7 días registrando emociones positivas.</div>
+          <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+          <div class="progress-info"><span>Colaborativo · 2 lobos</span><span>Especial</span></div>
+          <div class="reto-actions">
+            <button class="btn-reto accept" onclick="acceptReto(this, 100)">⚡ Unirse al reto</button>
+          </div>
+        </div>
+
+        <div class="reto-card completado" data-status="completados">
+          <div class="reto-header">
+            <span class="reto-icon">🏃</span>
+            <span class="reto-coins badge badge-green">✓ Completado</span>
+          </div>
+          <div class="reto-title">Primera Semana</div>
+          <div class="reto-desc">Registra tu estado emocional 7 días seguidos. ¡Lo lograste!</div>
+          <div class="progress-bar"><div class="progress-fill" style="width:100%;background:linear-gradient(90deg,var(--accent-green),#00b050)"></div></div>
+          <div class="progress-info"><span>7 de 7 días</span><span>100% 🎉</span></div>
+          <div class="reto-actions">
+            <button class="btn-reto view">Ver logro</button>
+          </div>
+        </div>
+
+        <div class="reto-card" data-status="disponibles">
+          <div class="reto-header">
+            <span class="reto-icon">🎨</span>
+            <span class="reto-coins">🪙 +500 coins</span>
+          </div>
+          <div class="reto-title">🌟 Reto Especial del Mes</div>
+          <div class="reto-desc">Mantén una racha de 30 días registrando tu estado emocional y completa al menos 5 retos del mes.</div>
+          <div class="progress-bar"><div class="progress-fill" style="width:23%"></div></div>
+          <div class="progress-info"><span>7 de 30 días</span><span>23%</span></div>
+          <div class="reto-actions">
+            <button class="btn-reto view">Ver progreso</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== WALLET ===== -->
+    <div class="section" id="sec-wallet">
+      <div class="topbar">
+        <div>
+          <div class="topbar-title">💰 <span>Eight-Coins</span> Wallet</div>
+          <div class="topbar-subtitle">Tu economía emocional · Transparente como el blockchain</div>
+        </div>
+      </div>
+
+      <div class="wallet-header-card">
+        <div class="wallet-balance-label">Tu balance actual</div>
+        <div class="wallet-balance" id="wallet-balance">1,240</div>
+        <div class="wallet-balance-label">Eight-Coins 🪙</div>
+        <div class="wallet-next" style="margin-top:16px">
+          <div style="font-size:13px;color:var(--text-secondary);margin-bottom:8px">Próxima recompensa en <strong style="color:var(--accent-gold)">260 coins</strong></div>
+          <div class="progress-bar" style="height:8px;max-width:400px;margin:0 auto">
+            <div class="progress-fill" style="width:82%"></div>
+          </div>
+        </div>
+        <div style="display:flex;gap:12px;justify-content:center;margin-top:20px">
+          <span class="badge badge-gold">+120 hoy</span>
+          <span class="badge badge-cyan">+340 esta semana</span>
+          <span class="badge badge-green">+1,240 total</span>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">📈 Coins por semana</div>
+          <div style="height:200px;margin-top:12px"><canvas id="wallet-chart"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="card-title">⚡ Cómo ganar más coins</div>
+          <div style="margin-top:12px;display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:10px;background:var(--bg-elevated);border-radius:var(--radius-sm)">
+              <span style="font-size:13px">💭 Registro emocional diario</span>
+              <span class="badge badge-gold">+10</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:10px;background:var(--bg-elevated);border-radius:var(--radius-sm)">
+              <span style="font-size:13px">🤖 Hablar con Wolf AI</span>
+              <span class="badge badge-gold">+15</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:10px;background:var(--bg-elevated);border-radius:var(--radius-sm)">
+              <span style="font-size:13px">🎯 Completar reto fácil</span>
+              <span class="badge badge-gold">+20-40</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:10px;background:var(--bg-elevated);border-radius:var(--radius-sm)">
+              <span style="font-size:13px">🔥 Racha de 7 días</span>
+              <span class="badge badge-gold">+50</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:10px;background:rgba(245,197,66,.05);border-radius:var(--radius-sm);border:1px solid var(--border-gold)">
+              <span style="font-size:13px">🌟 Reto especial del mes</span>
+              <span class="badge badge-gold">+500</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:16px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+          <div class="card-title">🔗 Registro de Transacciones (Blockchain)</div>
+          <span class="badge badge-cyan">🔐 Inmutable · SHA-256</span>
+        </div>
+        <div id="tx-list">
+          <div class="transaction-row">
+            <div class="tx-icon">💭</div>
+            <div class="tx-info">
+              <div class="tx-name">Registro emocional — Alegre</div>
+              <div class="tx-hash">0x7f4a2b1c9e8d3f56a0b7c4d2e1f9a8b3c6d5e4f2</div>
+            </div>
+            <div>
+              <div class="tx-amount positive">+10 🪙</div>
+              <div class="tx-date">Hoy, 08:31</div>
+            </div>
+          </div>
+          <div class="transaction-row">
+            <div class="tx-icon">🤖</div>
+            <div class="tx-info">
+              <div class="tx-name">Sesión con Wolf AI completada</div>
+              <div class="tx-hash">0x3a1b8c9f2e7d4a5c6b0f1e8d3c2a9b7f4e5d6c1</div>
+            </div>
+            <div>
+              <div class="tx-amount positive">+15 🪙</div>
+              <div class="tx-date">Hoy, 09:15</div>
+            </div>
+          </div>
+          <div class="transaction-row">
+            <div class="tx-icon">🎯</div>
+            <div class="tx-info">
+              <div class="tx-name">Reto "Primera Semana" completado</div>
+              <div class="tx-hash">0x9c4d2a8f1b7e5c3a6f0d9b2e4c7a1f8d5b3e6c2</div>
+            </div>
+            <div>
+              <div class="tx-amount positive">+50 🪙</div>
+              <div class="tx-date">Ayer, 20:00</div>
+            </div>
+          </div>
+          <div class="transaction-row">
+            <div class="tx-icon">🛍️</div>
+            <div class="tx-info">
+              <div class="tx-name">Compra: Fondo "Bosque Nocturno"</div>
+              <div class="tx-hash">0x2f8b1e9d4c7a0f3b5e8c1d6a9f2b7e4c0d3a8f1</div>
+            </div>
+            <div>
+              <div class="tx-amount negative">-200 🪙</div>
+              <div class="tx-date">Ayer, 18:22</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== PANEL DECE ===== -->
+    <div class="section" id="sec-dece">
+      <div class="topbar">
+        <div>
+          <div class="topbar-title">📊 Panel <span>DECE</span></div>
+          <div class="topbar-subtitle">Monitoreo emocional del grupo · Tiempo real</div>
+        </div>
+        <div class="topbar-actions">
+          <span class="badge badge-red">🚨 2 alertas altas</span>
+          <span class="badge badge-gold">⚠️ 3 alertas medias</span>
+        </div>
+      </div>
+
+      <div class="grid-4" style="margin-bottom:20px">
+        <div class="stat-card cyan">
+          <div class="stat-label">Total estudiantes</div>
+          <div class="stat-value">30</div>
+          <span class="stat-icon">👥</span>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-label">Bienestar positivo</div>
+          <div class="stat-value">21</div>
+          <div class="stat-change">70% del grupo</div>
+          <span class="stat-icon">😊</span>
+        </div>
+        <div class="stat-card gold">
+          <div class="stat-label">Requieren seguimiento</div>
+          <div class="stat-value">7</div>
+          <span class="stat-icon">👁️</span>
+        </div>
+        <div class="stat-card purple">
+          <div class="stat-label">Alertas activas</div>
+          <div class="stat-value">5</div>
+          <div class="stat-change" style="color:var(--accent-red)">2 críticas</div>
+          <span class="stat-icon">🚨</span>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div class="card">
+            <div class="card-title" style="margin-bottom:16px">🚨 Alertas activas</div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div class="alert-card alta" onclick="showStudentDetail('Sofía M.')">
+                <span class="alert-indicator alta"></span>
+                <div class="alert-info">
+                  <div class="alert-name">Sofía M.</div>
+                  <div class="alert-meta">5 días negativos seguidos · Palabras de riesgo detectadas</div>
+                </div>
+                <span class="alert-time">Hace 2h</span>
+                <span class="alert-badge alta">ALTA</span>
+              </div>
+              <div class="alert-card alta" onclick="showStudentDetail('Diego R.')">
+                <span class="alert-indicator alta"></span>
+                <div class="alert-info">
+                  <div class="alert-name">Diego R.</div>
+                  <div class="alert-meta">6 días de emociones negativas · Ansiedad intensa</div>
+                </div>
+                <span class="alert-time">Hace 4h</span>
+                <span class="alert-badge alta">ALTA</span>
+              </div>
+              <div class="alert-card media" onclick="showStudentDetail('Camila V.')">
+                <span class="alert-indicator media"></span>
+                <div class="alert-info">
+                  <div class="alert-name">Camila V.</div>
+                  <div class="alert-meta">3 emociones negativas seguidas</div>
+                </div>
+                <span class="alert-time">Hace 6h</span>
+                <span class="alert-badge media">MEDIA</span>
+              </div>
+              <div class="alert-card media" onclick="showStudentDetail('Andrés P.')">
+                <span class="alert-indicator media"></span>
+                <div class="alert-info">
+                  <div class="alert-name">Andrés P.</div>
+                  <div class="alert-meta">4 emociones negativas en la semana</div>
+                </div>
+                <span class="alert-time">Hoy</span>
+                <span class="alert-badge media">MEDIA</span>
+              </div>
+              <div class="alert-card baja">
+                <span class="alert-indicator baja"></span>
+                <div class="alert-info">
+                  <div class="alert-name">Luis F.</div>
+                  <div class="alert-meta">2 emociones negativas · Monitoreo continuo</div>
+                </div>
+                <span class="alert-time">Ayer</span>
+                <span class="alert-badge baja">BAJA</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div class="card">
+            <div class="card-title" style="margin-bottom:8px">🌡️ Mapa de Calor Emocional — Aula 3°B</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;font-size:11px;color:var(--text-muted);margin-bottom:10px">
+              <span>🟢 Alegre</span><span>🔵 Tranquilo</span><span>⚫ Neutro</span><span>🟡 Ansioso</span><span>🔴 Crítico</span>
+            </div>
+            <div class="heatmap-grid" id="heatmap"></div>
+          </div>
+          <div class="card">
+            <div class="card-title">📈 Tendencia emocional del grupo</div>
+            <div style="height:180px;margin-top:12px"><canvas id="dece-chart"></canvas></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== TIENDA ===== -->
+    <div class="section" id="sec-tienda">
+      <div class="topbar">
+        <div>
+          <div class="topbar-title">🛍️ <span>Tienda</span> de Recompensas</div>
+          <div class="topbar-subtitle">Canjea tus Eight-Coins por recompensas digitales exclusivas</div>
+        </div>
+        <div class="topbar-actions">
+          <span class="coins-reward">🪙 Tu saldo: <span id="shop-coins">1,240</span> coins</span>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:8px;margin-bottom:20px">
+        <button class="filter-btn active" onclick="this.parentNode.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));this.classList.add('active')">Todos</button>
+        <button class="filter-btn" onclick="this.parentNode.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));this.classList.add('active')">Fondos 🖼️</button>
+        <button class="filter-btn" onclick="this.parentNode.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));this.classList.add('active')">Stickers 🎨</button>
+        <button class="filter-btn" onclick="this.parentNode.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));this.classList.add('active')">Insignias 🏅</button>
+        <button class="filter-btn" onclick="this.parentNode.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));this.classList.add('active')">Premium ⭐</button>
+      </div>
+
+      <div class="grid-3">
+        <div class="shop-item">
+          <div class="shop-item-preview" style="background:linear-gradient(135deg,#0a1628,#001830)">🌲🌙🐺</div>
+          <div class="shop-item-info">
+            <div class="shop-item-name">Fondo "Bosque Nocturno"</div>
+            <div class="shop-item-desc">Fondo animado de bosque con luna llena para tu perfil</div>
+            <div class="shop-item-footer">
+              <span class="shop-item-price">🪙 200</span>
+              <button class="btn-buy" onclick="buyItem(this,'Bosque Nocturno',200)">Canjear</button>
+            </div>
+          </div>
+        </div>
+        <div class="shop-item">
+          <div class="shop-item-preview" style="background:linear-gradient(135deg,#1a0a2e,#2d1054)">⭐🌌✨</div>
+          <div class="shop-item-info">
+            <div class="shop-item-name">Fondo "Galaxia Wolves"</div>
+            <div class="shop-item-desc">Fondo estelar con el logo de Los Wolves brillando</div>
+            <div class="shop-item-footer">
+              <span class="shop-item-price">🪙 350</span>
+              <button class="btn-buy" onclick="buyItem(this,'Galaxia Wolves',350)">Canjear</button>
+            </div>
+          </div>
+        </div>
+        <div class="shop-item">
+          <div class="shop-item-preview" style="background:linear-gradient(135deg,#001a10,#003020)">🐺💚🌿</div>
+          <div class="shop-item-info">
+            <div class="shop-item-name">Pack Stickers "Lobo Emocional"</div>
+            <div class="shop-item-desc">12 stickers del lobo con diferentes emociones para usar en el chat</div>
+            <div class="shop-item-footer">
+              <span class="shop-item-price">🪙 150</span>
+              <button class="btn-buy" onclick="buyItem(this,'Stickers Lobo',150)">Canjear</button>
+            </div>
+          </div>
+        </div>
+        <div class="shop-item">
+          <div class="shop-item-preview" style="background:linear-gradient(135deg,#1a1000,#2a1c00)">🏅👑🎖️</div>
+          <div class="shop-item-info">
+            <div class="shop-item-name">Insignia "Lobo de Oro"</div>
+            <div class="shop-item-desc">Insignia exclusiva visible en tu perfil y en el ranking de la manada</div>
+            <div class="shop-item-footer">
+              <span class="shop-item-price">🪙 500</span>
+              <button class="btn-buy" onclick="buyItem(this,'Lobo de Oro',500)">Canjear</button>
+            </div>
+          </div>
+        </div>
+        <div class="shop-item">
+          <div class="shop-item-preview" style="background:linear-gradient(135deg,#001525,#002a3a)">🌊💙🐋</div>
+          <div class="shop-item-info">
+            <div class="shop-item-name">Acceso Premium "Mente Zen"</div>
+            <div class="shop-item-desc">Desbloquea retos premium de meditación y bienestar por 30 días</div>
+            <div class="shop-item-footer">
+              <span class="shop-item-price">🪙 800</span>
+              <button class="btn-buy" onclick="buyItem(this,'Mente Zen',800)">Canjear</button>
+            </div>
+          </div>
+        </div>
+        <div class="shop-item">
+          <div class="shop-item-preview" style="background:linear-gradient(135deg,#1a0808,#2a0e0e)">🎭🎪✨</div>
+          <div class="shop-item-info">
+            <div class="shop-item-name">Pack Stickers "Manada Feliz"</div>
+            <div class="shop-item-desc">8 stickers animados de la manada celebrando logros</div>
+            <div class="shop-item-footer">
+              <span class="shop-item-price">🪙 120</span>
+              <button class="btn-buy" onclick="buyItem(this,'Manada Feliz',120)">Canjear</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== EQUIPO ===== -->
+    <div class="section" id="sec-equipo">
+      <div class="topbar">
+        <div>
+          <div class="topbar-title">🫂 Mi <span>Manada</span></div>
+          <div class="topbar-subtitle">Los Wolves — "Juntos somos más fuertes"</div>
+        </div>
+        <div class="topbar-actions">
+          <span class="badge badge-cyan">👥 28 miembros activos</span>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title" style="margin-bottom:16px">🏆 Ranking de la Manada</div>
+          <div id="team-list">
+            <div class="team-member">
+              <span class="team-rank r1">🥇</span>
+              <div class="team-avatar-big" style="background:linear-gradient(135deg,#f5c542,#cc9900)">🐺</div>
+              <div class="team-info">
+                <div class="team-name">Valentina K. <span id="current-user-marker"></span></div>
+                <div class="team-badges"><span class="badge-mini">Racha 15d</span><span class="badge-mini">Lobo líder</span></div>
+              </div>
+              <span class="team-score">2,840</span>
+            </div>
+            <div class="team-member">
+              <span class="team-rank r2">🥈</span>
+              <div class="team-avatar-big" style="background:linear-gradient(135deg,#a8a8a8,#666)">🦊</div>
+              <div class="team-info">
+                <div class="team-name">Sebastián M.</div>
+                <div class="team-badges"><span class="badge-mini">Racha 12d</span></div>
+              </div>
+              <span class="team-score">2,310</span>
+            </div>
+            <div class="team-member">
+              <span class="team-rank r3">🥉</span>
+              <div class="team-avatar-big" style="background:linear-gradient(135deg,#c47a5a,#8b4513)">🦁</div>
+              <div class="team-info">
+                <div class="team-name" id="my-rank-name">Tú</div>
+                <div class="team-badges"><span class="badge-mini">Racha 7d</span><span class="badge-mini">🪙 1,240</span></div>
+              </div>
+              <span class="team-score" style="color:var(--accent-cyan)" id="my-score">1,240</span>
+            </div>
+            <div class="team-member">
+              <span class="team-rank" style="font-size:14px">4</span>
+              <div class="team-avatar-big" style="background:linear-gradient(135deg,#00d4ff,#0066aa)">🐬</div>
+              <div class="team-info">
+                <div class="team-name">Carolina B.</div>
+                <div class="team-badges"><span class="badge-mini">Racha 5d</span></div>
+              </div>
+              <span class="team-score">1,180</span>
+            </div>
+            <div class="team-member">
+              <span class="team-rank" style="font-size:14px">5</span>
+              <div class="team-avatar-big" style="background:linear-gradient(135deg,#a855f7,#6b21a8)">🦋</div>
+              <div class="team-info">
+                <div class="team-name">Marco A.</div>
+                <div class="team-badges"><span class="badge-mini">Racha 3d</span></div>
+              </div>
+              <span class="team-score">980</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div class="card">
+            <div class="card-title">📊 Bienestar colectivo esta semana</div>
+            <div style="height:180px;margin-top:12px"><canvas id="team-chart"></canvas></div>
+          </div>
+          <div class="card">
+            <div class="card-title">💬 Chat de la Manada</div>
+            <div style="height:180px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding:10px 0" id="team-chat">
+              <div style="display:flex;gap:8px;align-items:flex-start">
+                <span style="font-size:18px">🐺</span>
+                <div>
+                  <div style="font-size:12px;font-weight:700;color:var(--accent-cyan)">Valentina K.</div>
+                  <div style="font-size:13px;background:var(--bg-elevated);padding:8px 12px;border-radius:10px;border:1px solid var(--border)">¡Hola manada! ¿Cómo van sus retos esta semana? 🐺</div>
+                </div>
+              </div>
+              <div style="display:flex;gap:8px;align-items:flex-start">
+                <span style="font-size:18px">🦊</span>
+                <div>
+                  <div style="font-size:12px;font-weight:700;color:var(--text-secondary)">Sebastián M.</div>
+                  <div style="font-size:13px;background:var(--bg-elevated);padding:8px 12px;border-radius:10px;border:1px solid var(--border)">¡Completé el reto de respiración hoy! 🌬️ +20 coins 🪙</div>
+                </div>
+              </div>
+              <div style="display:flex;gap:8px;align-items:flex-start">
+                <span style="font-size:18px">🦁</span>
+                <div>
+                  <div style="font-size:12px;font-weight:700;color:var(--accent-gold)">Tú</div>
+                  <div style="font-size:13px;background:rgba(0,212,255,.08);padding:8px 12px;border-radius:10px;border:1px solid rgba(0,212,255,.2)">¡Vamos equipo! Juntos somos más fuertes 💙🐺</div>
+                </div>
+              </div>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:10px">
+              <input type="text" id="team-msg" placeholder="Escribe a la manada..." class="wolfai-input" style="font-size:13px;padding:10px 14px" onkeydown="if(event.key==='Enter')sendTeamMsg()">
+              <button class="wolfai-send" onclick="sendTeamMsg()">➤</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== PROYECCIÓN ===== -->
+    <div class="section" id="sec-proyeccion">
+      <div class="topbar">
+        <div>
+          <div class="topbar-title">📈 <span>Proyección</span> & Estadísticas</div>
+          <div class="topbar-subtitle">Análisis de bienestar emocional del grupo</div>
+        </div>
+        <div class="topbar-actions">
+          <button class="btn-sm outline" onclick="exportReport()">📄 Exportar reporte</button>
+        </div>
+      </div>
+
+      <div class="grid-4" style="margin-bottom:20px">
+        <div class="stat-card cyan">
+          <div class="stat-label">Participación</div>
+          <div class="stat-value">87%</div>
+          <div class="stat-change">↑ +5% vs mes anterior</div>
+          <span class="stat-icon">📊</span>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-label">Índice bienestar</div>
+          <div class="stat-value">7.4</div>
+          <div class="stat-change">↑ +0.8 este mes</div>
+          <span class="stat-icon">💚</span>
+        </div>
+        <div class="stat-card gold">
+          <div class="stat-label">Coins distribuidas</div>
+          <div class="stat-value">48K</div>
+          <div class="stat-change">Esta semana</div>
+          <span class="stat-icon">🪙</span>
+        </div>
+        <div class="stat-card purple">
+          <div class="stat-label">Alertas resueltas</div>
+          <div class="stat-value">94%</div>
+          <div class="stat-change">Tasa de resolución</div>
+          <span class="stat-icon">✅</span>
+        </div>
+      </div>
+
+      <div class="grid-2" style="gap:16px">
+        <div class="card">
+          <div class="card-title">📈 Tendencia emocional mensual</div>
+          <div style="height:220px;margin-top:12px"><canvas id="trend-chart"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="card-title">🥧 Distribución de emociones</div>
+          <div style="height:220px;margin-top:12px"><canvas id="pie-chart"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="card-title">📅 Registros diarios (últimas 4 semanas)</div>
+          <div style="height:180px;margin-top:12px"><canvas id="daily-chart"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="card-title">🎯 Efectividad de retos completados</div>
+          <div style="height:180px;margin-top:12px"><canvas id="retos-chart"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== PERFIL ===== -->
+    <div class="section" id="sec-perfil">
+      <div class="topbar">
+        <div>
+          <div class="topbar-title">👤 Mi <span>Perfil</span></div>
+          <div class="topbar-subtitle">Tu historia emocional en la manada</div>
+        </div>
+        <div class="topbar-actions">
+          <button class="btn-sm outline">✏️ Editar perfil</button>
+        </div>
+      </div>
+
+      <div class="profile-hero">
+        <div class="profile-avatar-lg">
+          🐺
+          <div class="profile-level-badge">7</div>
+        </div>
+        <div class="profile-info">
+          <h2 id="profile-name">Lobo Veloz</h2>
+          <div class="handle">@lobo_veloz · Los Wolves</div>
+          <div class="joined">Miembro desde Enero 2025</div>
+          <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap">
+            <span class="badge badge-gold">🔥 Racha 7d</span>
+            <span class="badge badge-cyan">Nivel 7</span>
+            <span class="badge badge-green">Activo</span>
+          </div>
+        </div>
+        <div class="profile-stats">
+          <div class="profile-stat-item">
+            <div class="pval" style="color:var(--accent-gold)" id="prof-coins">1,240</div>
+            <div class="plabel">Coins</div>
+          </div>
+          <div class="profile-stat-item">
+            <div class="pval" style="color:var(--accent-cyan)">47</div>
+            <div class="plabel">Registros</div>
+          </div>
+          <div class="profile-stat-item">
+            <div class="pval" style="color:var(--accent-green)">12</div>
+            <div class="plabel">Retos</div>
+          </div>
+          <div class="profile-stat-item">
+            <div class="pval" style="color:var(--accent-purple)">7</div>
+            <div class="plabel">Racha</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">📊 Mi historial emocional</div>
+          <div style="height:200px;margin-top:12px"><canvas id="profile-chart"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="card-title">🏅 Mis logros</div>
+          <div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <div class="achievement"><span class="achievement-icon">🐺</span><div><div class="achievement-name">Primera Manada</div><div class="achievement-desc">Desbloqueado</div></div></div>
+            <div class="achievement"><span class="achievement-icon">🔥</span><div><div class="achievement-name">Racha 7 días</div><div class="achievement-desc">Desbloqueado</div></div></div>
+            <div class="achievement"><span class="achievement-icon">💬</span><div><div class="achievement-name">Conversador</div><div class="achievement-desc">Desbloqueado</div></div></div>
+            <div class="achievement"><span class="achievement-icon">🎯</span><div><div class="achievement-name">Primer Reto</div><div class="achievement-desc">Desbloqueado</div></div></div>
+            <div class="achievement locked"><span class="achievement-icon">🌟</span><div><div class="achievement-name">Racha 30 días</div><div class="achievement-desc">🔒 23 días más</div></div></div>
+            <div class="achievement locked"><span class="achievement-icon">👑</span><div><div class="achievement-name">Lobo Legendario</div><div class="achievement-desc">🔒 Nivel 10</div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- MODALS -->
+<div class="modal-overlay hidden" id="modal-overlay" onclick="closeModal()">
+  <div class="modal" onclick="event.stopPropagation()" id="modal-content">
+    <div class="modal-icon" id="modal-icon">🐺</div>
+    <h3 id="modal-title">Título</h3>
+    <p id="modal-body">Cuerpo</p>
+    <div class="modal-actions" id="modal-actions">
+      <button class="btn-sm primary" onclick="closeModal()">Entendido</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast hidden" id="toast">
+  <span class="toast-icon" id="toast-icon">🎉</span>
+  <span class="toast-text" id="toast-text">Mensaje</span>
+</div>
+
+<!-- COINS ANIMATION CONTAINER -->
+<div class="coins-anim-container" id="coins-anim"></div>
+
+<script>
+// ===================== STATE =====================
+let appState = {
+  coins: 1240,
+  streak: 7,
+  role: 'estudiante',
+  userName: 'Lobo Veloz',
+  negativeStreak: 0,
+  selectedEmotion: null,
+  selectedEmotionType: null,
+  breathingActive: false,
+  breathingPhase: null,
+  authTab: 'login'
+};
+
+// ===================== PARTICLES =====================
+(function() {
+  const c = document.getElementById('particles');
+  for(let i=0; i<20; i++) {
+    const s = document.createElement('span');
+    s.style.cssText = `left:${Math.random()*100}%;animation-delay:${Math.random()*8}s;animation-duration:${6+Math.random()*6}s;width:${1+Math.random()*3}px;height:${1+Math.random()*3}px`;
+    c.appendChild(s);
+  }
+})();
+
+// ===================== LOGIN =====================
+let selectedRole = 'estudiante';
+
+function selectRole(role) {
+  selectedRole = role;
+  document.getElementById('role-estudiante').classList.toggle('active', role==='estudiante');
+  document.getElementById('role-dece').classList.toggle('active', role==='dece');
+}
+
+function goToStep1() {
+  document.getElementById('step-role').style.display = '';
+  document.getElementById('step-auth').style.display = 'none';
+}
+
+function goToStep2() {
+  if(!selectedRole) { showToast('⚠️','Selecciona tu rol primero','error'); return; }
+  document.getElementById('step-role').style.display = 'none';
+  const s = document.getElementById('step-auth');
+  s.style.display = '';
+  document.getElementById('step2-avatar').textContent = selectedRole==='dece' ? '🏥' : '🐺';
+  document.getElementById('step2-title').textContent = selectedRole==='dece' ? 'Portal DECE' : 'Bienvenido, Lobo';
+  document.getElementById('step2-sub').textContent = selectedRole==='dece' ? 'Acceso exclusivo para consejeros' : 'Ingresa a tu manada';
+}
+
+function setAuthTab(tab, el) {
+  appState.authTab = tab;
+  document.querySelectorAll('.login-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('field-nombre').style.display = tab==='register' ? '' : 'none';
+}
+
+function doLogin() {
+  const email = document.getElementById('input-email').value;
+  if(!email) { showToast('⚠️','Completa todos los campos','error'); return; }
+  const nombre = document.getElementById('input-nombre').value || (selectedRole==='dece' ? 'Consejero DECE' : 'Lobo Veloz');
+  appState.role = selectedRole;
+  appState.userName = nombre || email.split('@')[0];
+  initApp();
+}
+
+function doLogout() {
+  document.getElementById('page-app').classList.remove('active');
+  document.getElementById('page-login').classList.add('active');
+  goToStep1();
+}
+
+function initApp() {
+  document.getElementById('page-login').classList.remove('active');
+  document.getElementById('page-app').classList.add('active');
+
+  // Update UI with user data
+  const name = appState.userName;
+  document.getElementById('sidebar-name').textContent = name;
+  document.getElementById('home-name').textContent = name.split(' ')[0];
+  document.getElementById('welcome-name').textContent = name.split(' ')[0];
+  document.getElementById('profile-name').textContent = name;
+  document.getElementById('my-rank-name').textContent = name.split(' ')[0];
+  document.getElementById('sidebar-role').textContent = appState.role === 'dece' ? 'Consejero DECE' : 'Estudiante';
+  document.getElementById('sidebar-avatar').textContent = appState.role === 'dece' ? '🏥' : '🐺';
+
+  if(appState.role === 'dece') {
+    document.getElementById('nav-dece').style.display = '';
+    document.getElementById('nav-dece-section').style.display = '';
+  }
+
+  updateCoinsUI();
+  initCharts();
+  buildHeatmap();
+  navigate('home', document.querySelector('.nav-item.active'));
+}
+
+// ===================== NAVIGATION =====================
+function navigate(section, el) {
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  const sec = document.getElementById('sec-'+section);
+  if(sec) sec.classList.add('active');
+  if(el) el.classList.add('active');
+  // Init charts lazily
+  setTimeout(()=>initSectionCharts(section), 50);
+}
+
+// ===================== MOOD CHECK =====================
+function selectEmotion(name, emoji, type, btn) {
+  document.querySelectorAll('.emotion-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  appState.selectedEmotion = {name, emoji};
+  appState.selectedEmotionType = type;
+}
+
+function submitMood() {
+  if(!appState.selectedEmotion) { showToast('⚠️','Selecciona cómo te sientes primero','error'); return; }
+  const {name, emoji} = appState.selectedEmotion;
+  const type = appState.selectedEmotionType;
+  const intensity = document.getElementById('intensity-range').value;
+  const note = document.getElementById('mood-note').value;
+
+  // Negative streak logic
+  if(type === 'negative') {
+    appState.negativeStreak++;
+  } else {
+    appState.negativeStreak = 0;
+  }
+
+  // Award coins
+  addCoins(10);
+
+  // Add to history
+  const list = document.getElementById('mood-history-list');
+  const row = document.createElement('div');
+  row.className = 'mood-history-row';
+  row.style.animation = 'msg-in .3s ease';
+  row.innerHTML = `<span class="mood-history-emoji">${emoji}</span>
+    <div class="mood-history-info"><div class="mood-history-name">${name} · Intensidad ${intensity}/5</div><div class="mood-history-date">Ahora mismo${note?' — "'+note.substring(0,30)+'..."':''}</div></div>
+    <span class="mood-history-coins">+10 🪙</span>`;
+  list.prepend(row);
+
+  // Clear selection
+  document.querySelectorAll('.emotion-btn').forEach(b=>b.classList.remove('selected'));
+  document.getElementById('mood-note').value = '';
+  appState.selectedEmotion = null;
+
+  // Check DECE alert
+  if(appState.negativeStreak >= 3) {
+    document.getElementById('dece-alert-banner').classList.remove('hidden');
+    showModal('🚨','Alerta enviada al DECE',`Se han detectado ${appState.negativeStreak} emociones negativas seguidas. Tu consejero ha sido notificado para acompañarte. Recuerda que no estás solo.`,'danger');
+    // Navigate to wolfai for support
+    setTimeout(()=>{
+      addWolfMessage('Hola, veo que has tenido días difíciles últimamente. Estoy aquí para ti. ¿Quieres contarme cómo te sientes? 💙');
+    }, 500);
+  } else {
+    showToast(`${emoji}`,'¡Estado registrado! +10 coins 🪙');
+  }
+
+  // Wolf AI context
+  setTimeout(()=>{
+    addWolfMessage(`Acabo de ver que hoy te sientes ${name.toLowerCase()} ${emoji}. ${type==='negative' ? 'Gracias por compartirlo. ¿Quieres que hagamos juntos un ejercicio de respiración?' : '¡Qué bueno saberlo! Sigue así, tu manada está orgullosa de ti 🐺'}`);
+  }, 200);
+}
+
+// ===================== WOLF AI =====================
+const wolfResponses = {
+  ansioso: ['Entiendo que te sientes ansioso. Es completamente normal. ¿Sabes qué está causando esa sensación? 🤔','Cuando me sientes ansioso, prueba la técnica 5-4-3-2-1: nombra 5 cosas que puedes ver, 4 que puedes tocar, 3 que escuchas, 2 que hueles, 1 que puedes saborear. ¿Lo intentamos?'],
+  respiracion: ['¡Claro! El ejercicio de respiración puede ayudarte muchísimo. Ve al panel lateral y toca el círculo azul. Inhala 4 segundos, mantén 4, exhala 4. Yo te guío 🌬️'],
+  amigos: ['Las relaciones con los demás pueden ser complicadas. ¿Quieres contarme qué pasó? Todo lo que hablamos es privado 💙','A veces los amigos no se dan cuenta del impacto de sus palabras. Lo importante es que tus emociones son válidas.'],
+  examenes: ['¡Los exámenes generan mucho estrés! Es completamente normal. ¿Ya tienes un plan de estudio? Organizarse puede reducir mucho la ansiedad 📚','Recuerda: tu valor como persona no depende de tus notas. Un paso a la vez, lobo.'],
+  solo: ['Sentirse solo duele. Pero recuerda que formas parte de una manada que te aprecia 🐺💙','¿Has hablado con alguien de la manada sobre cómo te sientes? A veces un mensaje puede hacer mucha diferencia.'],
+  default: ['Gracias por compartir eso conmigo. Cuéntame más — estoy aquí para escucharte sin juzgarte 💙','Entiendo. ¿Cómo ha estado tu semana en general? A veces ayuda poner en perspectiva todo lo que estamos viviendo.','Eso suena importante. ¿Hay algo específico que te gustaría trabajar hoy? Podemos hacer un ejercicio de respiración, hablar de lo que sientes, o simplemente charlar 🐺']
+};
+
+const riskWords = ['lastimar','no quiero estar','desaparecer','morir','suicid','hacerme daño','ya no quiero'];
+
+function getWolfResponse(msg) {
+  const lower = msg.toLowerCase();
+  if(riskWords.some(w=>lower.includes(w))) {
+    return '⚠️ Esto es muy importante para mí. Lo que dices me preocupa y quiero asegurarme de que estés bien. Voy a pedir que tu consejero DECE te acompañe. Por favor, no estás solo/a. Si necesitas ayuda ahora, llama al 171.';
+  }
+  if(lower.includes('ansios') || lower.includes('nervios')) return wolfResponses.ansioso[Math.floor(Math.random()*2)];
+  if(lower.includes('respiraci')) return wolfResponses.respiracion[0];
+  if(lower.includes('amigo') || lower.includes('friend')) return wolfResponses.amigos[Math.floor(Math.random()*2)];
+  if(lower.includes('examen') || lower.includes('tarea') || lower.includes('estres') || lower.includes('estrés')) return wolfResponses.examenes[Math.floor(Math.random()*2)];
+  if(lower.includes('sol') || lower.includes('nadie')) return wolfResponses.solo[Math.floor(Math.random()*2)];
+  return wolfResponses.default[Math.floor(Math.random()*wolfResponses.default.length)];
+}
+
+function addWolfMessage(text) {
+  const msgs = document.getElementById('chat-messages');
+  const div = document.createElement('div');
+  div.className = 'message wolf';
+  div.innerHTML = `<div class="msg-avatar">🐺</div><div class="msg-bubble">${text}</div>`;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function addUserMessage(text) {
+  const msgs = document.getElementById('chat-messages');
+  const div = document.createElement('div');
+  div.className = 'message user';
+  div.innerHTML = `<div class="msg-avatar" style="text-align:right">🧑‍🎓</div><div class="msg-bubble">${text}</div>`;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function sendMessage() {
+  const inp = document.getElementById('chat-input');
+  const msg = inp.value.trim();
+  if(!msg) return;
+  inp.value = '';
+  addUserMessage(msg);
+  // Award coins once per session (simplified)
+  setTimeout(()=>{
+    const resp = getWolfResponse(msg);
+    addWolfMessage(resp);
+    // Check for risk words
+    if(riskWords.some(w=>msg.toLowerCase().includes(w))) {
+      addCoins(0);
+    } else {
+      addCoins(5);
+    }
+  }, 800);
+}
+
+function sendQuick(msg) {
+  addUserMessage(msg);
+  document.getElementById('chat-input').value = '';
+  setTimeout(()=>{
+    const resp = getWolfResponse(msg);
+    addWolfMessage(resp);
+    addCoins(5);
+  }, 600);
+}
+
+// BREATHING
+let breatheInterval = null;
+const breathePhases = ['Inhala... 🌬️','Mantén... ⏸️','Exhala... 💨','Mantén... ⏸️'];
+let breatheIdx = 0;
+
+function toggleBreathing() {
+  if(appState.breathingActive) {
+    clearInterval(breatheInterval);
+    appState.breathingActive = false;
+    document.getElementById('breathe-circle').className = 'breathing-circle';
+    document.getElementById('breathe-label').textContent = 'Toca para comenzar';
+    return;
+  }
+  appState.breathingActive = true;
+  breatheIdx = 0;
+  runBreathe();
+  breatheInterval = setInterval(runBreathe, 4000);
+}
+
+function runBreathe() {
+  const circle = document.getElementById('breathe-circle');
+  const label = document.getElementById('breathe-label');
+  const phase = breathePhases[breatheIdx % 4];
+  label.textContent = phase;
+  if(breatheIdx % 4 === 0) {
+    circle.className = 'breathing-circle inhale';
+  } else if(breatheIdx % 4 === 2) {
+    circle.className = 'breathing-circle exhale';
+  } else {
+    circle.className = 'breathing-circle';
+  }
+  breatheIdx++;
+}
+
+// ===================== RETOS =====================
+function filterRetos(filter, btn) {
+  document.querySelectorAll('.retos-filters .filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.reto-card').forEach(card=>{
+    if(filter==='todos') { card.style.display=''; return; }
+    const status = card.dataset.status;
+    card.style.display = status === filter ? '' : 'none';
+  });
+}
+
+function acceptReto(btn, coins) {
+  const card = btn.closest('.reto-card');
+  card.dataset.status = 'activos';
+  card.classList.add('en-progreso');
+  btn.textContent = '✓ Completar hoy';
+  btn.className = 'btn-reto complete';
+  btn.onclick = function(){ completeReto(this, coins); };
+  showToast('🎯',`¡Reto aceptado! Complétalo para ganar 🪙 ${coins} coins`);
+}
+
+function completeReto(btn, coins) {
+  const card = btn.closest('.reto-card');
+  card.classList.remove('en-progreso');
+  card.classList.add('completado');
+  card.dataset.status = 'completados';
+  const fill = card.querySelector('.progress-fill');
+  fill.style.width = '100%';
+  fill.style.background = 'linear-gradient(90deg,var(--accent-green),#00b050)';
+  card.querySelector('.progress-info').innerHTML = `<span>Completado ✓</span><span>100% 🎉</span>`;
+  btn.remove();
+  addCoins(coins);
+  spawnCoins(btn, coins);
+  showToast('🎉',`¡Reto completado! +${coins} coins 🪙`);
+}
+
+// ===================== TIENDA =====================
+function buyItem(btn, name, price) {
+  if(appState.coins < price) {
+    showToast('😕',`No tienes suficientes coins. Necesitas ${price-appState.coins} más`,'error');
+    return;
+  }
+  appState.coins -= price;
+  updateCoinsUI();
+  btn.textContent = '✓ Canjeado';
+  btn.disabled = true;
+  btn.style.background = 'var(--accent-green)';
+  showToast('🎉',`¡${name} canjeado exitosamente!`);
+  addTxRow(`Compra: ${name}`, -price);
+}
+
+// ===================== COINS =====================
+function addCoins(amount) {
+  appState.coins += amount;
+  updateCoinsUI();
+}
+
+function updateCoinsUI() {
+  const formatted = appState.coins.toLocaleString();
+  document.getElementById('sidebar-coins').textContent = formatted;
+  document.getElementById('wallet-balance').textContent = formatted;
+  document.getElementById('shop-coins').textContent = formatted;
+  document.getElementById('my-score').textContent = formatted;
+  document.getElementById('prof-coins').textContent = formatted;
+  document.getElementById('stat-coins-home').textContent = formatted;
+}
+
+function spawnCoins(el, amount) {
+  const container = document.getElementById('coins-anim');
+  const rect = el.getBoundingClientRect();
+  for(let i=0; i<Math.min(amount/10, 8); i++) {
+    const coin = document.createElement('div');
+    coin.className = 'flying-coin';
+    coin.textContent = '🪙';
+    coin.style.cssText = `left:${rect.left+Math.random()*rect.width}px;top:${rect.top}px;animation-delay:${i*0.1}s`;
+    container.appendChild(coin);
+    setTimeout(()=>coin.remove(), 1000 + i*100);
+  }
+}
+
+function addTxRow(name, amount) {
+  const list = document.getElementById('tx-list');
+  const row = document.createElement('div');
+  row.className = 'transaction-row';
+  row.style.animation = 'msg-in .3s ease';
+  const hash = Array.from({length:40},()=>'0123456789abcdef'[Math.floor(Math.random()*16)]).join('');
+  row.innerHTML = `<div class="tx-icon">${amount>0?'💭':'🛍️'}</div>
+    <div class="tx-info"><div class="tx-name">${name}</div><div class="tx-hash">0x${hash}</div></div>
+    <div><div class="tx-amount ${amount>0?'positive':'negative'}">${amount>0?'+':''}${amount} 🪙</div><div class="tx-date">Ahora</div></div>`;
+  list.prepend(row);
+}
+
+// ===================== PANEL DECE =====================
+const heatmapData = [
+  {name:'Valentina',state:'alegre'},{name:'Sebastián',state:'alegre'},{name:'Diego',state:'enojado'},{name:'Sofía',state:'ansioso'},{name:'Camila',state:'triste'},
+  {name:'Andrés',state:'ansioso'},{name:'Carolina',state:'tranquilo'},{name:'Marco',state:'alegre'},{name:'Luis',state:'triste'},{name:'Ana',state:'alegre'},
+  {name:'Pedro',state:'tranquilo'},{name:'María',state:'alegre'},{name:'José',state:'neutro'},{name:'Laura',state:'alegre'},{name:'Carlos',state:'tranquilo'},
+  {name:'Elena',state:'alegre'},{name:'David',state:'neutro'},{name:'Sara',state:'alegre'},{name:'Miguel',state:'ansioso'},{name:'Lucia',state:'tranquilo'},
+  {name:'Pablo',state:'alegre'},{name:'Isabel',state:'alegre'},{name:'Jorge',state:'neutro'},{name:'Teresa',state:'alegre'},{name:'Ricardo',state:'tranquilo'},
+  {name:'Nadia',state:'alegre'},{name:'Felipe',state:'neutro'},{name:'Viviana',state:'alegre'},{name:'Gabriel',state:'alegre'},{name:'Tú',state:'alegre'}
+];
+
+function buildHeatmap() {
+  const grid = document.getElementById('heatmap');
+  if(!grid) return;
+  grid.innerHTML = '';
+  heatmapData.forEach(s=>{
+    const cell = document.createElement('div');
+    cell.className = `heatmap-cell ${s.state}`;
+    cell.setAttribute('data-name', `${s.name}: ${s.state}`);
+    cell.textContent = s.name[0];
+    grid.appendChild(cell);
+  });
+}
+
+function showStudentDetail(name) {
+  showModal('📊',`Perfil de ${name}`,`Historial emocional: 6 días negativos seguidos. Última emoción: Muy ansioso (5/5). Nota libre: "No puedo dormir pensando en todo". Recomendación: Cita inmediata de seguimiento.\n\n⚠️ Alerta ALTA activa desde hace 4 horas.`);
+}
+
+// ===================== EQUIPO =====================
+function sendTeamMsg() {
+  const inp = document.getElementById('team-msg');
+  const msg = inp.value.trim();
+  if(!msg) return;
+  inp.value = '';
+  const chat = document.getElementById('team-chat');
+  const div = document.createElement('div');
+  div.style.cssText = 'display:flex;gap:8px;align-items:flex-start;animation:msg-in .3s ease';
+  div.innerHTML = `<span style="font-size:18px">🦁</span>
+    <div>
+      <div style="font-size:12px;font-weight:700;color:var(--accent-gold)">Tú</div>
+      <div style="font-size:13px;background:rgba(0,212,255,.08);padding:8px 12px;border-radius:10px;border:1px solid rgba(0,212,255,.2)">${msg}</div>
+    </div>`;
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+// ===================== MODAL / TOAST =====================
+function showModal(icon, title, body, type) {
+  document.getElementById('modal-icon').textContent = icon;
+  document.getElementById('modal-title').textContent = title;
+  document.getElementById('modal-body').textContent = body;
+  document.getElementById('modal-overlay').classList.remove('hidden');
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.add('hidden');
+}
+
+let toastTimeout = null;
+function showToast(icon, text, type='success') {
+  const toast = document.getElementById('toast');
+  document.getElementById('toast-icon').textContent = icon;
+  document.getElementById('toast-text').textContent = text;
+  toast.className = 'toast' + (type==='error'?' error':'');
+  if(toastTimeout) clearTimeout(toastTimeout);
+  toastTimeout = setTimeout(()=>{ toast.classList.add('hidden'); }, 3000);
+}
+
+// ===================== EXPORT =====================
+function exportReport() {
+  showToast('📄','Generando reporte PDF... (función demo)');
+  setTimeout(()=>{
+    const content = `REPORTE DE BIENESTAR EMOCIONAL - Los Wolves\n\nFecha: ${new Date().toLocaleDateString('es-EC')}\n\nParticipación: 87%\nÍndice de bienestar: 7.4/10\nEstudiantes activos: 30\nAlertas resueltas: 94%\n\nDistribución emocional:\n- Alegre: 40%\n- Tranquilo: 25%\n- Neutro: 15%\n- Triste: 10%\n- Ansioso: 7%\n- Enojado: 3%\n\nGenerado por Los Wolves Platform`;
+    const blob = new Blob([content], {type:'text/plain'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'reporte-bienestar-wolves.txt';
+    a.click();
+    showToast('✅','¡Reporte exportado exitosamente!');
+  }, 1000);
+}
+
+// ===================== CHARTS =====================
+Chart.defaults.color = '#7a9bbf';
+Chart.defaults.borderColor = 'rgba(0,212,255,0.08)';
+
+const chartInstances = {};
+
+function destroyChart(id) {
+  if(chartInstances[id]) { chartInstances[id].destroy(); delete chartInstances[id]; }
+}
+
+function initCharts() {
+  // Home sparkline
+  setTimeout(()=>{
+    destroyChart('home-chart');
+    const ctx = document.getElementById('home-chart');
+    if(ctx) chartInstances['home-chart'] = new Chart(ctx, {
+      type:'line',
+      data:{
+        labels:['Lun','Mar','Mié','Jue','Vie','Sáb','Hoy'],
+        datasets:[{
+          label:'Bienestar',
+          data:[4,3,2,4,5,4,null],
+          borderColor:'#00d4ff',
+          backgroundColor:'rgba(0,212,255,0.08)',
+          fill:true,
+          tension:.4,
+          pointBackgroundColor:'#00d4ff',
+          pointRadius:4,
+          borderWidth:2
+        }]
+      },
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false}},y:{min:0,max:5,grid:{color:'rgba(0,212,255,0.05)'}}}}
+    });
+  }, 100);
+}
+
+function initSectionCharts(section) {
+  if(section === 'mood') {
+    destroyChart('mood-week');
+    const ctx = document.getElementById('mood-week-chart');
+    if(ctx) chartInstances['mood-week'] = new Chart(ctx, {
+      type:'bar',
+      data:{
+        labels:['Lun','Mar','Mié','Jue','Vie','Sáb','Hoy'],
+        datasets:[{label:'Intensidad emocional',data:[4,3,2,4,5,4,0],backgroundColor:['#00e676','#00d4ff','#ff4d6d','#00e676','#00e676','#00d4ff','rgba(0,212,255,.2)'],borderRadius:6}]
+      },
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false}},y:{min:0,max:5,grid:{color:'rgba(0,212,255,0.05)'}}}}
+    });
+  }
+  if(section === 'wallet') {
+    destroyChart('wallet-c');
+    const ctx = document.getElementById('wallet-chart');
+    if(ctx) chartInstances['wallet-c'] = new Chart(ctx, {
+      type:'bar',
+      data:{
+        labels:['Sem 1','Sem 2','Sem 3','Sem 4','Esta sem'],
+        datasets:[{label:'Coins ganadas',data:[180,240,310,285,340],backgroundColor:'rgba(245,197,66,0.6)',borderColor:'#f5c542',borderWidth:1,borderRadius:6}]
+      },
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false}},y:{grid:{color:'rgba(0,212,255,0.05)'}}}}
+    });
+  }
+  if(section === 'dece') {
+    destroyChart('dece-c');
+    const ctx = document.getElementById('dece-chart');
+    if(ctx) chartInstances['dece-c'] = new Chart(ctx, {
+      type:'line',
+      data:{
+        labels:['Sem 1','Sem 2','Sem 3','Sem 4'],
+        datasets:[
+          {label:'Positivo',data:[18,20,22,21],borderColor:'#00e676',backgroundColor:'rgba(0,230,118,.08)',fill:true,tension:.4,borderWidth:2},
+          {label:'Negativo',data:[8,6,5,7],borderColor:'#ff4d6d',backgroundColor:'rgba(255,77,109,.05)',fill:true,tension:.4,borderWidth:2}
+        ]
+      },
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top'}},scales:{x:{grid:{display:false}},y:{grid:{color:'rgba(0,212,255,0.05)'}}}}
+    });
+  }
+  if(section === 'equipo') {
+    destroyChart('team-c');
+    const ctx = document.getElementById('team-chart');
+    if(ctx) chartInstances['team-c'] = new Chart(ctx, {
+      type:'radar',
+      data:{
+        labels:['Bienestar','Participación','Retos','Racha','Coins','Apoyo'],
+        datasets:[{label:'Tu manada',data:[74,87,65,70,82,90],borderColor:'#00d4ff',backgroundColor:'rgba(0,212,255,.1)',pointBackgroundColor:'#00d4ff',borderWidth:2}]
+      },
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{r:{grid:{color:'rgba(0,212,255,0.1)'},ticks:{color:'#3d5a7a',font:{size:10}}}}}
+    });
+  }
+  if(section === 'proyeccion') {
+    destroyChart('trend-c');
+    const ctx1 = document.getElementById('trend-chart');
+    if(ctx1) chartInstances['trend-c'] = new Chart(ctx1, {
+      type:'line',
+      data:{
+        labels:['Ene','Feb','Mar','Abr','May','Jun'],
+        datasets:[
+          {label:'Bienestar positivo (%)',data:[58,62,67,70,74,79],borderColor:'#00e676',backgroundColor:'rgba(0,230,118,.08)',fill:true,tension:.4,borderWidth:2,pointRadius:4},
+          {label:'Alertas DECE',data:[12,10,9,8,6,5],borderColor:'#ff4d6d',tension:.4,borderWidth:2,pointRadius:4}
+        ]
+      },
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top'}},scales:{x:{grid:{display:false}},y:{grid:{color:'rgba(0,212,255,0.05)'}}}}
+    });
+    destroyChart('pie-c');
+    const ctx2 = document.getElementById('pie-chart');
+    if(ctx2) chartInstances['pie-c'] = new Chart(ctx2, {
+      type:'doughnut',
+      data:{
+        labels:['Alegre','Tranquilo','Neutro','Triste','Ansioso','Enojado'],
+        datasets:[{data:[40,25,15,10,7,3],backgroundColor:['#00e676','#00d4ff','#7a9bbf','#f5c542','#ff9f43','#ff4d6d'],borderWidth:0,hoverOffset:4}]
+      },
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{font:{size:11}}}}}
+    });
+    destroyChart('daily-c');
+    const ctx3 = document.getElementById('daily-chart');
+    if(ctx3) chartInstances['daily-c'] = new Chart(ctx3, {
+      type:'bar',
+      data:{
+        labels:Array.from({length:28},(_,i)=>`D${i+1}`),
+        datasets:[{label:'Registros',data:Array.from({length:28},()=>Math.floor(20+Math.random()*10)),backgroundColor:'rgba(0,212,255,0.5)',borderRadius:4}]
+      },
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{font:{size:9}}},y:{grid:{color:'rgba(0,212,255,0.05)'}}}}
+    });
+    destroyChart('retos-c');
+    const ctx4 = document.getElementById('retos-chart');
+    if(ctx4) chartInstances['retos-c'] = new Chart(ctx4, {
+      type:'bar',
+      data:{
+        labels:['Bienestar','Respiración','Gratitud','Social','Especial'],
+        datasets:[{label:'Completados',data:[24,18,15,8,4],backgroundColor:'rgba(168,85,247,0.6)',borderColor:'#a855f7',borderWidth:1,borderRadius:6}]
+      },
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false}},y:{grid:{color:'rgba(0,212,255,0.05)'}}}}
+    });
+  }
+  if(section === 'perfil') {
+    destroyChart('profile-c');
+    const ctx = document.getElementById('profile-chart');
+    if(ctx) chartInstances['profile-c'] = new Chart(ctx, {
+      type:'line',
+      data:{
+        labels:['Sem 1','Sem 2','Sem 3','Sem 4','Sem 5','Sem 6','Sem 7'],
+        datasets:[{
+          label:'Bienestar',
+          data:[3,3.5,3,4,4.2,4,4.5],
+          borderColor:'#a855f7',
+          backgroundColor:'rgba(168,85,247,0.08)',
+          fill:true,
+          tension:.4,
+          pointBackgroundColor:'#a855f7',
+          pointRadius:4,
+          borderWidth:2
+        }]
+      },
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false}},y:{min:0,max:5,grid:{color:'rgba(168,85,247,0.08)'}}}}
+    });
+  }
+}
+</script>
+</body>
+</html>
